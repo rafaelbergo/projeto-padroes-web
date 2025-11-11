@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vícios Digitais e Engajamento: Uma Análise Psicológica</title>
+
+    <style>
+        /*
+            Variáveis CSS para Cores e Fontes:
+        */
+        :root {
+            --primary-color: #4A00B7; /* Roxo escuro */
+            --secondary-color: #8C00F0; /* Roxo vibrante */
+            --accent-color: #00D1FF; /* Azul claro para destaque */
+            --text-color: #333;
+            --light-text-color: #f4f4f4;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --dopamine-color: #FF69B4; /* Rosa choque */
+
+            --font-main: 'Roboto', sans-serif;
+            --font-headings: 'Montserrat', sans-serif;
+        }
+
+        /*
+            Estilos Globais e Reset Básico:
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-headings);
+            color: var(--primary-color);
+            margin-bottom: 0.8em;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 2em; color: var(--secondary-color); }
+        h3 { font-size: 1.5em; color: var(--primary-color); }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /*
+            Estilos do Cabeçalho e Navegação:
+        */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-headings);
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--light-text-color);
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-menu li {
+            margin-left: 25px;
+        }
+
+        .nav-menu a {
+            color: var(--light-text-color);
+            font-weight: 500;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--accent-color);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+        }
+
+        .hamburger .bar {
+            height: 3px;
+            width: 100%;
+            background-color: var(--light-text-color);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        /*
+            Estilos da Seção Principal (SPA Content):
+        */
+        main {
+            padding: 40px 0;
+        }
+
+        .page-content {
+            display: none; /* Oculta todas as páginas por padrão */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .page-content.active {
+            display: block; /* Mostra a página ativa */
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text-color);
+            padding: 80px 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            color: var(--accent-color);
+            font-size: 3.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #00A3CC;
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .grid-3-cols {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /*
+            Estilos Específicos para Interações JavaScript:
+            Dopamina, Simulador, Ferramentas, Quiz.
+        */
+
+        /* Animação Dopamina */
+        #dopamine-animation {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dopamine-molecule {
+            width: 30px;
+            height: 30px;
+            background-color: var(--dopamine-color);
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0;
+            animation: dopaminePulse 2s forwards ease-out;
+            box-shadow: 0 0 15px var(--dopamine-color);
+        }
+
+        @keyframes dopaminePulse {
+            0% { transform: scale(0.1) translate(0, 0); opacity: 0.2; }
+            50% { transform: scale(1.2) translate(0, -50px); opacity: 1; }
+            100% { transform: scale(0.1) translate(0, -100px); opacity: 0; }
+        }
+
+        /* Simulador de Mecanismos Psicológicos */
+        .simulator-option {
+            background-color: var(--background-color);
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .simulator-option:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .simulator-option.selected {
+            background-color: var(--secondary-color);
+            color: var(--light-text-color);
+            font-weight: bold;
+        }
+        #simulator-output {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e6e6fa; /* Lavanda */
+            border-left: 5px solid var(--primary-color);
+            border-radius: 5px;
+            min-height: 100px;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Demonstração de Ferramentas de Estimulação */
+        .stimulation-demo-item {
+            background-color: var(--background-color);
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stimulation-demo-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        .demo-notification {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff4d4d;
+            color: var(--light-text-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .demo-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .infinite-scroll-area {
+            height: 150px;
+            overflow-y: scroll;
+            border: 1px solid #ddd;
+            background-color: var(--card-background);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .infinite-scroll-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            color: #666;
+        }
+        .infinite-scroll-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Quiz de Conscientização */
+        .quiz-question {
+            background-color: var(--background-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .quiz-question p {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        .quiz-options label {
+            display: block;
+            margin-bottom: 10px;
+            background-color: var(--card-background);
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .quiz-options label:hover {
+            background-color: #e0e0e0;
+        }
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+        }
+        #quiz-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .feedback-incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /*
+            Estilos de Gamificação:
+            Exibição de pontos, badges e ranking.
+        */
+        .gamification-status {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+        .gamification-status h3 {
+            margin-bottom: 15px;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 25px;
+            background-color: var(--accent-color);
+            width: 0%;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .badge {
+            background-color: #ccc;
+            color: #666;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+        .badge.unlocked {
+            background-color: var(--secondary-color);
+            color: var(--light-text-color);
+            box-shadow: 0 0 8px var(--secondary-color);
+        }
+        .badge::before {
+            content: '⭐'; /* Ícone de estrela */
+            margin-right: 5px;
+        }
+
+        #ranking-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        #ranking-list li {
+            background-color: var(--background-color);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--accent-color);
+        }
+        #ranking-list li span:first-child {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        #ranking-list li span:last-child {
+            color: #555;
+        }
+
+        /*
+            Informações de copyright e créditos.
+        */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /*
+            Responsividade Mobile-First
+        */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none; /* Oculta o menu padrão em mobile */
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--primary-color);
+                position: absolute;
+                top: 70px; /* Altura do header */
+                left: 0;
+                padding: 15px 0;
+                box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            }
+            .nav-menu.active {
+                display: flex; /* Mostra o menu quando ativo */
+            }
+            .nav-menu li {
+                margin: 10px 0;
+                text-align: center;
+            }
+            .nav-menu a {
+                padding: 10px 20px;
+                display: block;
+            }
+            .hamburger {
+                display: flex; /* Mostra o ícone de hambúrguer */
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1em;
+            }
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+
+            .page-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--
+        Cabeçalho da Página:
+        Contém o logotipo do site e o menu de navegação principal.
+    -->
+    <header>
+        <div class="container">
+            <h1 class="logo">Vícios Digitais</h1>
+            <nav>
+                <div class="hamburger" id="hamburger-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu" id="main-nav-menu">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#dopaminergic-system" class="nav-link">Sistema Dopaminérgico</a></li>
+                    <li><a href="#psychological-mechanisms" class="nav-link">Mecanismos Psicológicos</a></li>
+                    <li><a href="#stimulation-tools" class="nav-link">Ferramentas de Estimulação</a></li>
+                    <li><a href="#gamification" class="nav-link">Gamificação</a></li>
+                    <li><a href="#awareness" class="nav-link">Conscientização</a></li>
+                    <li><a href="#conclusion" class="nav-link">Conclusão</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!--
+        Conteúdo Principal da Aplicação (SPA):
+        Todas as "páginas" são seções dentro do `main`, com visibilidade controlada por JavaScript.
+    -->
+    <main class="container">
+        <!--
+            Seção HOME:
+            Página de introdução e boas-vindas.
+        -->
+        <section id="home" class="page-content active">
+            <div class="hero">
+                <h1>Desvendando os Vícios Digitais</h1>
+                <p>Explore os mecanismos psicológicos e neurobiológicos que nos mantêm engajados (e por vezes presos) às tecnologias digitais. Entenda, reflita e conscientize-se.</p>
+                <a href="#dopaminergic-system" class="btn-primary nav-link">Comece Sua Jornada</a>
+            </div>
+            <div class="card">
+                <h2>Bem-vindo(a) ao Estudo sobre Engajamento Digital!</h2>
+                <p>Neste site interativo, você descobrirá como a tecnologia moderna é projetada para capturar nossa atenção. Desde a biologia do prazer em nosso cérebro até as sofisticadas táticas de design, mergulharemos fundo para entender a ciência por trás do nosso uso (muitas vezes excessivo) de dispositivos e plataformas.</p>
+                <p>Nossa jornada inclui exploração do sistema dopaminérgico, análise de mecanismos psicológicos como FOMO e recompensas variáveis, demonstrações de ferramentas de estimulação e uma seção de conscientização para ajudar a desenvolver hábitos digitais mais saudáveis. Prepare-se para uma experiência educacional única com elementos de gamificação!</p>
+            </div>
+        </section>
+
+        <!--
+            Seção SISTEMA DOPAMINÉRGICO:
+            Explora a relação entre dopamina e vício.
+        -->
+        <section id="dopaminergic-system" class="page-content">
+            <h2>O Sistema Dopaminérgico e o Vício</h2>
+            <p>A dopamina, frequentemente rotulada como o "hormônio do prazer", é na verdade um neurotransmissor crucial envolvido em processos de recompensa, motivação, aprendizado e memória. Em contextos de vício, incluindo os digitais, a dopamina desempenha um papel central ao reforçar comportamentos que levam a recompensas imediatas.</p>
+            <p>Quando interagimos com nossos dispositivos – recebemos uma notificação, um "like" em uma postagem, ou uma nova mensagem – nosso cérebro libera dopamina, criando uma sensação de satisfação. Este ciclo de antecipação e recompensa pode se tornar um laço vicioso, onde buscamos constantemente essa "dose" de dopamina, mesmo que as recompensas sejam mínimas ou prejudiciais a longo prazo.</p>
+
+            <h3>Como a Dopamina Atua?</h3>
+            <ul>
+                <li><strong>Antecipação da Recompensa:</strong> A dopamina é liberada mais na antecipação de uma recompensa do que na recompensa em si. É o "querer", não o "gostar".</li>
+                <li><strong>Reforço Comportamental:</strong> A experiência de liberação de dopamina reforça o comportamento que a antecedeu, tornando mais provável que o repitamos.</li>
+                <li><strong>Adaptação e Tolerância:</strong> Com o tempo, o cérebro pode se adaptar, exigindo estímulos cada vez maiores para atingir o mesmo nível de satisfação.</li>
+            </ul>
+
+            <div id="dopamine-animation">
+                <h3>Simulação de Liberação de Dopamina</h3>
+                <p>Clique no botão para simular a liberação de dopamina em resposta a um estímulo digital. Observe as "moléculas" subirem rapidamente!</p>
+                <button class="btn-primary" onclick="triggerDopamineAnimation()">Liberar Dopamina!</button>
+                <!-- As moléculas de dopamina serão adicionadas aqui via JS -->
+            </div>
+        </section>
+
+        <!--
+            Seção MECANISMOS PSICOLÓGICOS:
+            Desvenda táticas como FOMO, recompensas variáveis e prova social.
+        -->
+        <section id="psychological-mechanisms" class="page-content">
+            <h2>Mecanismos Psicológicos de Engajamento</h2>
+            <p>Plataformas digitais são meticulosamente projetadas utilizando princípios da psicologia comportamental para maximizar o engajamento do usuário. Entender esses mecanismos é o primeiro passo para recuperar o controle sobre nossos hábitos digitais.</p>
+
+            <h3>Principais Mecanismos:</h3>
+            <div class="grid-3-cols">
+                <div class="card">
+                    <h4>1. FOMO (Fear Of Missing Out)</h4>
+                    <p>O medo de perder algo importante ou divertido que outras pessoas estão experimentando. Notificações constantes e a exibição de atividades de amigos alimentam esse medo, incentivando a verificação contínua.</p>
+                </div>
+                <div class="card">
+                    <h4>2. Recompensas Variáveis e Intermitentes</h4>
+                    <p>Baseado nos estudos de Skinner, a imprevisibilidade da recompensa (ex: um "like" aleatório, um novo e-mail) torna o comportamento de busca mais viciante do que recompensas consistentes. É a base das "caça-níqueis digitais".</p>
+                </div>
+                <div class="card">
+                    <h4>3. Prova Social</h4>
+                    <p>A tendência de seguir as ações e opiniões de grupos maiores. Ver muitas pessoas usando um aplicativo ou curtindo um post cria a percepção de que é algo valioso ou socialmente aceito, estimulando a adesão.</p>
+                </div>
+                <div class="card">
+                    <h4>4. Reciprocidade</h4>
+                    <p>A necessidade de retribuir um favor. Quando alguém interage com seu conteúdo, você se sente compelido a interagir de volta, criando um ciclo de engajamento.</p>
+                </div>
+                <div class="card">
+                    <h4>5. Escassez e Urgência</h4>
+                    <p>Ofertas limitadas, contagens regressivas ou conteúdos que "desaparecem" após um tempo. Isso cria um senso de necessidade e impulsiona a ação imediata.</p>
+                </div>
+                <div class="card">
+                    <h4>6. Investimento e Compromisso</h4>
+                    <p>Quanto mais tempo, esforço ou dados você investe em uma plataforma (criar um perfil complexo, postar fotos), mais difícil é abandoná-la, devido ao "custo irrecuperável".</p>
+                </div>
+            </div>
+
+            <h3>Simulador Interativo de Mecanismos Psicológicos</h3>
+            <p>Selecione um cenário e veja como um mecanismo psicológico pode ser aplicado:</p>
+            <div id="simulator-options">
+                <div class="simulator-option" data-mechanism="fomo">
+                    <h4>Cenário: Notificação de Amigos</h4>
+                    <p>Você vê uma notificação "Seus amigos estão fazendo X".</p>
+                </div>
+                <div class="simulator-option" data-mechanism="variable-rewards">
+                    <h4>Cenário: Rolagem Infinita</h4>
+                    <p>Você rola a tela e novas postagens (boas ou ruins) aparecem aleatoriamente.</p>
+                </div>
+                <div class="simulator-option" data-mechanism="social-proof">
+                    <h4>Cenário: Artigo Popular</h4>
+                    <p>Você vê um artigo com "1 Milhão de Visualizações".</p>
+                </div>
+            </div>
+            <div id="simulator-output">
+                <p>Clique em um cenário acima para ver o efeito do mecanismo psicológico.</p>
+            </div>
+        </section>
+
+        <!--
+            Seção FERRAMENTAS DE ESTIMULAÇÃO:
+            Demonstra como interfaces são desenhadas para maximizar o uso.
+        -->
+        <section id="stimulation-tools" class="page-content">
+            <h2>Ferramentas Sofisticadas de Estimulação</h2>
+            <p>Além dos mecanismos psicológicos, as interfaces digitais empregam ferramentas de design e funcionalidade que são intencionalmente criadas para aumentar o tempo de tela e a frequência de uso. Essas "ferramentas" muitas vezes se manifestam como recursos convenientes, mas escondem intenções de engajamento profundo.</p>
+
+            <h3>Táticas Comuns de Design e Funcionalidade:</h3>
+            <div class="grid-3-cols">
+                <div class="card">
+                    <h4>Notificações Persistentes</h4>
+                    <p>Alertas sonoros e visuais que exigem nossa atenção, mesmo quando não estamos usando o aplicativo. Projetadas para nos puxar de volta ao ecossistema digital.</p>
+                </div>
+                <div class="card">
+                    <h4>Infinite Scroll (Rolagem Infinita)</h4>
+                    <p>Elimina o limite natural de uma página, fornecendo um fluxo contínuo de conteúdo. Impede o "ponto de parada" natural, mantendo o usuário indefinidamente engajado.</p>
+                </div>
+                <div class="card">
+                    <h4>Dark Patterns (Padrões Obscuros)</h4>
+                    <p>Táticas de interface que induzem o usuário a fazer coisas que não faria intencionalmente (ex: inscrever-se em newsletters, comprar algo a mais), manipulando a decisão.</p>
+                </div>
+                <div class="card">
+                    <h4>Listas de Reprodução Automática</h4>
+                    <p>Vídeos ou músicas que começam automaticamente após o término do conteúdo atual, removendo a necessidade de uma nova decisão e mantendo o consumo.</p>
+                </div>
+                <div class="card">
+                    <h4>Séries de "Visto por Último" e Status Online</h4>
+                    <p>Informações que criam um senso de urgência e conectividade constante, aumentando a pressão para responder e interagir rapidamente.</p>
+                </div>
+                <div class="card">
+                    <h4>Barras de Progresso e Recompensas Visuais</h4>
+                    <p>Indicadores que mostram o quanto "falta" para completar uma tarefa ou atingir um objetivo, encorajando a continuidade do uso para ver a "conclusão".</p>
+                </div>
+            </div>
+
+            <h3>Demonstração Visual de Ferramentas</h3>
+            <div class="stimulation-demo-item">
+                <h4>Notificações Engajadoras</h4>
+                <p>Clique no botão para simular uma notificação irresistível.</p>
+                <button class="btn-primary" onclick="showNotificationDemo()">Receber Notificação!</button>
+                <div class="demo-notification" id="notification-demo">Nova mensagem de um amigo! Clique para ver!</div>
+            </div>
+
+            <div class="stimulation-demo-item">
+                <h4>Experiência de Infinite Scroll</h4>
+                <p>Role a área abaixo para experimentar o "fluxo" de conteúdo sem fim. Novos itens aparecem magicamente!</p>
+                <div class="infinite-scroll-area" id="infinite-scroll-demo">
+                    <div class="infinite-scroll-item">Conteúdo 1</div>
+                    <div class="infinite-scroll-item">Conteúdo 2</div>
+                    <div class="infinite-scroll-item">Conteúdo 3</div>
+                    <div class="infinite-scroll-item">Conteúdo 4</div>
+                    <div class="infinite-scroll-item">Conteúdo 5</div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+            Seção GAMIFICAÇÃO:
+            Explica e implementa o sistema de pontos, badges e ranking.
+        -->
+        <section id="gamification" class="page-content">
+            <h2>Gamificação: A Arte de Transformar o Engajamento em Jogo</h2>
+            <p>A gamificação é a aplicação de elementos de design de jogos e princípios de jogo em contextos não-jogo. No ambiente digital, ela é usada para motivar usuários, incentivar o aprendizado e manter a atenção, transformando tarefas rotineiras em experiências mais divertidas e recompensadoras. No entanto, esses mesmos mecanismos podem ser explorados para aumentar o vício.</p>
+
+            <h3>Elementos de Gamificação Comuns:</h3>
+            <ul>
+                <li><strong>Pontos:</strong> Recompensas numéricas por completar tarefas ou interagir.</li>
+                <li><strong>Badges/Conquistas:</strong> Reconhecimento visual por alcançar marcos específicos.</li>
+                <li><strong>Barras de Progresso:</strong> Indicadores visuais de quão perto o usuário está de um objetivo.</li>
+                <li><strong>Rankings/Tabelas de Classificação:</strong> Competir com outros usuários, apelando ao nosso senso de competição.</li>
+                <li><strong>Recompensas Virtuais:</strong> Itens, moedas ou personalizações que incentivam o uso contínuo.</li>
+            </ul>
+
+            <div class="gamification-status card">
+                <h3>Seu Progresso no Site</h3>
+                <p>Explore as páginas para ganhar pontos e desbloquear badges!</p>
+                <p><strong>Pontos Acumulados:</strong> <span id="user-points">0</span></p>
+
+                <h4>Seu Nível de Conhecimento</h4>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="knowledge-progress">0%</div>
+                </div>
+
+                <h4>Suas Conquistas</h4>
+                <div class="badges-container" id="user-badges">
+                    <span class="badge" data-badge="home-visit">Visitante (Home)</span>
+                    <span class="badge" data-badge="dopamine-explorer">Explorador Dopamina</span>
+                    <span class="badge" data-badge="mechanisms-master">Mestre dos Mecanismos</span>
+                    <span class="badge" data-badge="tools-expert">Especialista em Ferramentas</span>
+                    <span class="badge" data-badge="gamification-guru">Guru da Gamificação</span>
+                    <span class="badge" data-badge="awareness-advocate">Defensor da Conscientização</span>
+                    <span class="badge" data-badge="quiz-master">Mestre do Quiz</span>
+                </div>
+            </div>
+
+            <div class="gamification-status card">
+                <h3>Ranking Global de Exploradores</h3>
+                <p>Compare seu progresso com outros usuários (simulados).</p>
+                <ul id="ranking-list">
+                    <!-- Ranking items will be loaded here by JS -->
+                </ul>
+            </div>
+        </section>
+
+        <!--
+            Seção CONSCIENTIZAÇÃO:
+            Estimula a reflexão crítica e hábitos digitais saudáveis.
+        -->
+        <section id="awareness" class="page-content">
+            <h2>Conscientização e Recuperação do Controle</h2>
+            <p>Reconhecer os mecanismos por trás do engajamento excessivo é o primeiro e mais importante passo para desenvolver uma relação mais saudável com a tecnologia. A conscientização nos permite fazer escolhas intencionais, em vez de reagir passivamente aos estímulos digitais.</p>
+
+            <h3>Estratégias para uma Vida Digital Mais Equilibrada:</h3>
+            <ul>
+                <li><strong>Auditoria Digital:</strong> Monitore seu tempo de tela e quais aplicativos você mais usa.</li>
+                <li><strong>Notificações Inteligentes:</strong> Desligue notificações desnecessárias e agrupe as importantes.</li>
+                <li><strong>Limites de Tempo:</strong> Use ferramentas para limitar o tempo em aplicativos específicos.</li>
+                <li><strong>Desconexão Regular:</strong> Estabeleça períodos sem telas (ex: antes de dormir, durante refeições).</li>
+                <li><strong>Foco em Conteúdo de Qualidade:</strong> Priorize plataformas que agreguem valor real, em vez de apenas preencher o tempo.</li>
+                <li><strong>Reflexão Crítica:</strong> Pergunte-se: "Por que estou usando este aplicativo agora? Qual é o meu objetivo?"</li>
+                <li><strong>Batalha contra os Dark Patterns:</strong> Aprenda a identificar e a se proteger de táticas manipuladoras de design.</li>
+            </ul>
+
+            <h3>Quiz Reflexivo sobre Conscientização</h3>
+            <p>Teste seu conhecimento e reflita sobre seus hábitos digitais.</p>
+
+            <div class="quiz-question">
+                <p>1. Qual mecanismo psicológico se beneficia da imprevisibilidade das recompensas digitais?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q1" value="a"> FOMO</label>
+                    <label><input type="radio" name="q1" value="b"> Prova Social</label>
+                    <label><input type="radio" name="q1" value="c"> Recompensas Variáveis</label>
+                    <label><input type="radio" name="q1" value="d"> Reciprocidade</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>2. Uma estratégia eficaz para reduzir o vício digital é:</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q2" value="a"> Ativar todas as notificações</label>
+                    <label><input type="radio" name="q2" value="b"> Ignorar o tempo de tela</label>
+                    <label><input type="radio" name="q2" value="c"> Estabelecer períodos de desconexão</label>
+                    <label><input type="radio" name="q2" value="d"> Focar apenas em aplicativos de entretenimento</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>3. O que são "Dark Patterns" no design digital?</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="q3" value="a"> Elementos de design que melhoram a acessibilidade</label>
+                    <label><input type="radio" name="q3" value="b"> Táticas de interface que manipulam o usuário a fazer algo não intencional</label>
+                    <label><input type="radio" name="q3" value="c"> Padrões de cores escuras para economizar bateria</label>
+                    <label><input type="radio" name="q3" value="d"> Design inovador que promove a criatividade</label>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="submitQuiz()">Ver Resultados do Quiz</button>
+            <div id="quiz-feedback"></div>
+        </section>
+
+        <!--
+            Seção CONCLUSÃO:
+            Resumo e chamadas para ação final.
+        -->
+        <section id="conclusion" class="page-content">
+            <h2>Conclusão: Rumo a um Futuro Digital Consciente</h2>
+            <p>Chegamos ao fim de nossa jornada. Esperamos que este site tenha proporcionado uma compreensão mais profunda sobre como os vícios digitais são construídos e como os mecanismos psicológicos de engajamento operam silenciosamente em nossas vidas diárias. A tecnologia é uma ferramenta poderosa; a chave é usá-la com intenção e controle, em vez de ser usado por ela.</p>
+
+            <h3>Reflexões Finais:</h3>
+            <p>O objetivo não é demonizar a tecnologia, mas sim capacitá-lo(a) a navegar no mundo digital de forma mais informada e resiliente. Lembre-se que as empresas por trás das plataformas digitais têm equipes dedicadas a maximizar seu tempo de tela, pois isso se traduz em lucro. Seu tempo e atenção são recursos valiosos.</p>
+            <p>Ao entender a ciência por trás do engajamento, você pode identificar as armadilhas, questionar os impulsos e construir hábitos digitais que sirvam aos seus objetivos de vida, e não aos das plataformas. O controle está em suas mãos.</p>
+
+            <h3>Próximos Passos:</h3>
+            <ol>
+                <li><strong>Compartilhe este Conhecimento:</strong> Ajude outras pessoas a se conscientizarem sobre os riscos e mecanismos.</li>
+                <li><strong>Aplique as Estratégias:</strong> Comece a implementar pequenas mudanças em seus hábitos digitais hoje mesmo.</li>
+                <li><strong>Continue Aprendendo:</strong> O mundo digital está em constante evolução; mantenha-se informado.</li>
+            </ol>
+            <p>Obrigado por explorar este conteúdo. Sua curiosidade e desejo de entender são o primeiro passo para uma relação mais saudável com a tecnologia.</p>
+        </section>
+    </main>
+
+    <!--
+        Rodapé da Página:
+        Informações de copyright e autoria.
+    -->
+    <footer>
+        <div class="container">
+            <p>&copy; Vícios Digitais e Engajamento Psicológico. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!--
+        Contém toda a lógica interativa do site, incluindo navegação, gamificação,
+        animações e simuladores.
+    -->
+    <script>
+        //
+        // Variáveis Globais e Funções de Utilidade
+        //
+        const pages = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const hamburger = document.getElementById('hamburger-menu');
+        const mainNavMenu = document.getElementById('main-nav-menu');
+
+        let userProgress = JSON.parse(localStorage.getItem('userProgress')) || {
+            points: 0,
+            visitedPages: {},
+            badges: [],
+            quizCompleted: false,
+            quizScore: 0
+        };
+
+        const QUIZ_ANSWERS = {
+            q1: 'c',
+            q2: 'c',
+            q3: 'b'
+        };
+
+        const BADGES_DEFINITIONS = {
+            'home-visit': { name: 'Visitante (Home)', points: 50 },
+            'dopamine-explorer': { name: 'Explorador Dopamina', points: 100 },
+            'mechanisms-master': { name: 'Mestre dos Mecanismos', points: 150 },
+            'tools-expert': { name: 'Especialista em Ferramentas', points: 150 },
+            'gamification-guru': { name: 'Guru da Gamificação', points: 100 },
+            'awareness-advocate': { name: 'Defensor da Conscientização', points: 200 },
+            'quiz-master': { name: 'Mestre do Quiz', points: 250 }
+        };
+
+        const RANKING_SIZE = 5; // Número de usuários no ranking simulado
+
+        //
+        // Funções de Gerenciamento de Páginas e Navegação
+        //
+        function showPage(pageId) {
+            pages.forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                updateNavLinkState(pageId);
+                mainNavMenu.classList.remove('active'); // Fecha o menu hambúrguer
+                updateGamification(pageId); // Atualiza gamificação ao visitar página
+                window.scrollTo(0, 0); // Rola para o topo da página
+            }
+        }
+
+        function updateNavLinkState(activePageId) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + activePageId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        //
+        // Funções de Gamificação (Pontos, Badges, Ranking)
+        //
+        function saveProgress() {
+            localStorage.setItem('userProgress', JSON.stringify(userProgress));
+        }
+
+        function loadProgress() {
+            const storedProgress = localStorage.getItem('userProgress');
+            if (storedProgress) {
+                userProgress = JSON.parse(storedProgress);
+            }
+        }
+
+        function updateGamification(pageId) {
+            const pageName = pageId.replace('-', '-'); // Ex: 'home-page' -> 'home-visit'
+            let badgeKey = '';
+
+            if (pageId === 'home') badgeKey = 'home-visit';
+            else if (pageId === 'dopaminergic-system') badgeKey = 'dopamine-explorer';
+            else if (pageId === 'psychological-mechanisms') badgeKey = 'mechanisms-master';
+            else if (pageId === 'stimulation-tools') badgeKey = 'tools-expert';
+            else if (pageId === 'gamification') badgeKey = 'gamification-guru';
+            else if (pageId === 'awareness') badgeKey = 'awareness-advocate';
+            // 'quiz-master' badge is awarded after quiz completion
+
+            if (!userProgress.visitedPages[pageId]) {
+                userProgress.visitedPages[pageId] = true;
+                const pointsEarned = 25; // Pontos por visitar uma nova página
+                userProgress.points += pointsEarned;
+                console.log(`Ganhou ${pointsEarned} pontos por visitar ${pageId}! Total: ${userProgress.points}`);
+
+                if (badgeKey && BADGES_DEFINITIONS[badgeKey] && !userProgress.badges.includes(badgeKey)) {
+                    userProgress.badges.push(badgeKey);
+                    userProgress.points += BADGES_DEFINITIONS[badgeKey].points; // Pontos extras pelo badge
+                    alert(`Parabéns! Você desbloqueou o badge "${BADGES_DEFINITIONS[badgeKey].name}" e ganhou ${BADGES_DEFINITIONS[badgeKey].points} pontos!`);
+                }
+                saveProgress();
+                renderGamificationStatus();
+            }
+        }
+
+        function renderGamificationStatus() {
+            document.getElementById('user-points').textContent = userProgress.points;
+
+            // Atualiza barra de progresso (ex: baseada nos badges desbloqueados)
+            const totalBadges = Object.keys(BADGES_DEFINITIONS).length;
+            const unlockedBadgesCount = userProgress.badges.length;
+            let progressPercentage = (unlockedBadgesCount / totalBadges) * 100;
+            progressPercentage = Math.min(progressPercentage, 100); // Garante que não excede 100%
+
+            const progressBar = document.getElementById('knowledge-progress');
+            progressBar.style.width = `${progressPercentage}%`;
+            progressBar.textContent = `${Math.round(progressPercentage)}%`;
+
+            // Renderiza badges
+            const badgesContainer = document.getElementById('user-badges');
+            badgesContainer.innerHTML = ''; // Limpa antes de renderizar
+            for (const key in BADGES_DEFINITIONS) {
+                const badgeElement = document.createElement('span');
+                badgeElement.classList.add('badge');
+                badgeElement.textContent = BADGES_DEFINITIONS[key].name;
+                if (userProgress.badges.includes(key)) {
+                    badgeElement.classList.add('unlocked');
+                }
+                badgesContainer.appendChild(badgeElement);
+            }
+            renderRanking();
+        }
+
+        function generateRandomRanking() {
+            let ranking = [];
+            const existingRankings = JSON.parse(localStorage.getItem('globalRanking')) || [];
+
+            // Adiciona o usuário atual ao ranking (se ainda não estiver lá ou para atualizar pontos)
+            let currentUserInRanking = existingRankings.find(u => u.id === 'current-user');
+            if (currentUserInRanking) {
+                currentUserInRanking.points = userProgress.points;
+            } else {
+                currentUserInRanking = { id: 'current-user', name: 'Você', points: userProgress.points };
+                existingRankings.push(currentUserInRanking);
+            }
+
+            // Garante que temos pelo menos RANKING_SIZE + 1 usuários (incluindo o atual)
+            // Cria usuários simulados se não houver o suficiente
+            while (existingRankings.length < RANKING_SIZE) {
+                const randomName = `Explorador ${Math.floor(Math.random() * 1000)}`;
+                const randomPoints = Math.floor(Math.random() * 1000) + 100; // Pontos aleatórios
+                existingRankings.push({ id: `sim-${Math.random()}`, name: randomName, points: randomPoints });
+            }
+
+            // Remove o usuário atual do ranking temporariamente para gerar outros e depois adicioná-lo de volta
+            ranking = existingRankings.filter(u => u.id !== 'current-user');
+
+            // Garante que o ranking simulado não tem pontos acima do usuário atual de forma absurda
+            // Se o usuário atual tem poucos pontos, os simulados serão menores ou próximos
+            if (userProgress.points < 300) { // Se o usuário tem poucos pontos
+                ranking = ranking.map(user => {
+                    if (user.id !== 'current-user') {
+                        user.points = Math.floor(Math.random() * (userProgress.points + 100)); // Simula pontos próximos
+                    }
+                    return user;
+                });
+            }
+
+
+            // Adiciona usuários simulados para preencher o ranking se necessário
+            for (let i = ranking.length; i < RANKING_SIZE; i++) {
+                const randomName = `Explorador ${Math.floor(Math.random() * 1000)}`;
+                // Garante que os pontos simulados são realistas em relação ao usuário
+                const randomPoints = Math.max(50, userProgress.points + (Math.random() * 200 - 100)); // +/- 100 do usuário
+                ranking.push({ id: `sim-${i}`, name: randomName, points: Math.round(randomPoints) });
+            }
+
+
+            // Adiciona o usuário atual de volta
+            ranking.push(currentUserInRanking);
+
+            // Ordena o ranking
+            ranking.sort((a, b) => b.points - a.points);
+
+            // Limita ao tamanho do ranking definido
+            ranking = ranking.slice(0, RANKING_SIZE);
+
+            localStorage.setItem('globalRanking', JSON.stringify(ranking));
+            return ranking;
+        }
+
+
+        function renderRanking() {
+            const rankingList = document.getElementById('ranking-list');
+            rankingList.innerHTML = '';
+            const globalRanking = generateRandomRanking();
+
+            globalRanking.forEach((user, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span>${index + 1}. ${user.name}</span>
+                    <span>${user.points} Pontos</span>
+                `;
+                rankingList.appendChild(listItem);
+            });
+        }
+
+        //
+        // Funções de Interatividade (Dopamina, Simulador, Ferramentas, Quiz)
+        //
+
+        // Animação de Dopamina
+        function triggerDopamineAnimation() {
+            const animationContainer = document.getElementById('dopamine-animation');
+            const numMolecules = 10;
+            for (let i = 0; i < numMolecules; i++) {
+                const molecule = document.createElement('div');
+                molecule.classList.add('dopamine-molecule');
+                // Posição inicial aleatória dentro do container
+                molecule.style.left = `${Math.random() * 100}%`;
+                molecule.style.bottom = '0';
+                // Atraso para criar um efeito cascata
+                molecule.style.animationDelay = `${i * 0.1}s`;
+                animationContainer.appendChild(molecule);
+
+                // Remove a molécula após a animação para não acumular no DOM
+                molecule.addEventListener('animationend', () => {
+                    molecule.remove();
+                });
+            }
+        }
+
+        // Simulador de Mecanismos Psicológicos
+        function setupPsychologicalSimulator() {
+            const options = document.querySelectorAll('#simulator-options .simulator-option');
+            const output = document.getElementById('simulator-output');
+
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    const mechanism = this.dataset.mechanism;
+                    let message = '';
+
+                    switch (mechanism) {
+                        case 'fomo':
+                            message = "<strong>FOMO em ação:</strong> A notificação aciona o medo de perder uma interação social. Você sente a necessidade de verificar, temendo ficar de fora do que seus amigos estão fazendo. Isso leva à abertura do aplicativo.";
+                            break;
+                        case 'variable-rewards':
+                            message = "<strong>Recompensas Variáveis em ação:</strong> Você continua rolando, na expectativa de encontrar algo interessante. A imprevisibilidade de quando (e se) um conteúdo atraente aparecerá mantém você preso ao ciclo de busca, tornando difícil parar.";
+                            break;
+                        case 'social-proof':
+                            message = "<strong>Prova Social em ação:</strong> O alto número de visualizações sugere que o artigo é valioso ou importante. Você é influenciado a lê-lo, presumindo que, se tantas pessoas gostaram, você também deveria, validando o conteúdo e a plataforma.";
+                            break;
+                        default:
+                            message = "Mecanismo não reconhecido.";
+                    }
+                    output.innerHTML = message;
+                });
+            });
+        }
+
+        // Demonstração de Ferramentas de Estimulação
+        function showNotificationDemo() {
+            const notification = document.getElementById('notification-demo');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000); // Notificação some após 3 segundos
+        }
+
+        let infiniteScrollItemCount = 5;
+        function setupInfiniteScrollDemo() {
+            const scrollArea = document.getElementById('infinite-scroll-demo');
+            scrollArea.addEventListener('scroll', () => {
+                if (scrollArea.scrollTop + scrollArea.clientHeight >= scrollArea.scrollHeight - 10) {
+                    // Quase no fim da rolagem, carrega mais itens
+                    loadMoreInfiniteScrollItems();
+                }
+            });
+        }
+
+        function loadMoreInfiniteScrollItems() {
+            const scrollArea = document.getElementById('infinite-scroll-demo');
+            // Impede carregamento excessivo
+            if (infiniteScrollItemCount >= 20) return;
+
+            setTimeout(() => { // Simula um atraso de rede
+                for (let i = 0; i < 3; i++) {
+                    infiniteScrollItemCount++;
+                    const newItem = document.createElement('div');
+                    newItem.classList.add('infinite-scroll-item');
+                    newItem.textContent = `Conteúdo ${infiniteScrollItemCount}`;
+                    scrollArea.appendChild(newItem);
+                }
+            }, 300);
+        }
+
+        // Quiz de Conscientização
+        function submitQuiz() {
+            let score = 0;
+            const quizFeedback = document.getElementById('quiz-feedback');
+            quizFeedback.innerHTML = '';
+            quizFeedback.classList.remove('feedback-correct', 'feedback-incorrect');
+
+            let allAnswered = true;
+            for (const qKey in QUIZ_ANSWERS) {
+                const selectedOption = document.querySelector(`input[name="${qKey}"]:checked`);
+                if (!selectedOption) {
+                    allAnswered = false;
+                    break;
+                }
+                if (selectedOption.value === QUIZ_ANSWERS[qKey]) {
+                    score++;
+                }
+            }
+
+            if (!allAnswered) {
+                quizFeedback.textContent = 'Por favor, responda a todas as perguntas antes de enviar.';
+                quizFeedback.classList.add('feedback-incorrect');
+                return;
+            }
+
+            const totalQuestions = Object.keys(QUIZ_ANSWERS).length;
+            userProgress.quizScore = score;
+            userProgress.quizCompleted = true;
+
+            if (score === totalQuestions) {
+                quizFeedback.textContent = `Parabéns! Você acertou todas as ${totalQuestions} perguntas! Você é um Mestre da Conscientização!`;
+                quizFeedback.classList.add('feedback-correct');
+                // Desbloqueia o badge "Mestre do Quiz"
+                if (!userProgress.badges.includes('quiz-master')) {
+                    userProgress.badges.push('quiz-master');
+                    userProgress.points += BADGES_DEFINITIONS['quiz-master'].points;
+                    alert(`Incrível! Você desbloqueou o badge "Mestre do Quiz" e ganhou ${BADGES_DEFINITIONS['quiz-master'].points} pontos!`);
+                }
+            } else {
+                quizFeedback.textContent = `Você acertou ${score} de ${totalQuestions} perguntas. Revise as seções para melhorar!`;
+                quizFeedback.classList.add('feedback-incorrect');
+            }
+            userProgress.points += (score * 50); // Pontos por acertos no quiz
+            saveProgress();
+            renderGamificationStatus();
+        }
+
+        //
+        // Event Listeners e Inicialização
+        //
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            renderGamificationStatus();
+
+            // Adiciona evento para o menu hambúrguer
+            hamburger.addEventListener('click', () => {
+                mainNavMenu.classList.toggle('active');
+            });
+
+            // Adiciona eventos para os links de navegação
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1); // Remove o '#'
+                    showPage(targetId);
+                });
+            });
+
+            // Exibe a página inicial ou a página especificada na URL (se houver hash)
+            const initialPage = window.location.hash ? window.location.hash.substring(1) : 'home';
+            showPage(initialPage);
+
+            // Inicializa simuladores e demos
+            setupPsychologicalSimulator();
+            setupInfiniteScrollDemo();
+        });
+    </script>
+</body>
+</html>
