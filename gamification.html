@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vícios Digitais e Engajamento: Uma Análise Psicológica</title>
+	<link rel="stylesheet" href="styles.css">
+	<script src="app.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Vícios Digitais</h1>
+
+            <nav>
+                <div class="hamburger" id="hamburger-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+
+                <ul class="nav-menu" id="main-nav-menu">
+                    <li><a href="home.html" class="nav-link">Home</a></li>
+                    <li><a href="dopaminergic-system.html" class="nav-link">Sistema Dopaminérgico</a></li>
+                    <li><a href="psychological-mechanisms.html" class="nav-link">Mecanismos Psicológicos</a></li>
+                    <li><a href="stimulation-tools.html" class="nav-link">Ferramentas de Estimulação</a></li>
+                    <li><a href="gamification.html" class="nav-link active">Gamificação</a></li>
+                    <li><a href="awareness.html" class="nav-link">Conscientização</a></li>
+                    <li><a href="conclusion.html" class="nav-link">Conclusão</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="gamification" class="page-content active">
+        <h2>Gamificação: A Arte de Transformar o Engajamento em Jogo</h2>
+
+        <p>A gamificação é a aplicação de elementos de design de jogos e princípios de jogo em contextos não-jogo. No ambiente digital, ela é usada para motivar usuários, incentivar o aprendizado e manter a atenção, transformando tarefas rotineiras em experiências mais divertidas e recompensadoras. No entanto, esses mesmos mecanismos podem ser explorados para aumentar o vício.</p>
+
+        <h3>Elementos de Gamificação Comuns:</h3>
+
+        <ul>
+            <li><strong>Pontos:</strong> Recompensas numéricas por completar tarefas ou interagir.</li>
+            <li><strong>Badges/Conquistas:</strong> Reconhecimento visual por alcançar marcos específicos.</li>
+            <li><strong>Barras de Progresso:</strong> Indicadores visuais de quão perto o usuário está de um objetivo.</li>
+            <li><strong>Rankings/Tabelas de Classificação:</strong> Competir com outros usuários, apelando ao nosso senso de competição.</li>
+            <li><strong>Recompensas Virtuais:</strong> Itens, moedas ou personalizações que incentivam o uso contínuo.</li>
+        </ul>
+
+        <div class="gamification-status card">
+            <h3>Seu Progresso no Site</h3>
+
+            <p>Explore as páginas para ganhar pontos e desbloquear badges!</p>
+            <p><strong>Pontos Acumulados:</strong> <span id="user-points">0</span></p>
+
+            <h4>Seu Nível de Conhecimento</h4>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="knowledge-progress">0%</div>
+            </div>
+
+            <h4>Suas Conquistas</h4>
+
+            <div class="badges-container" id="user-badges">
+                <span class="badge" data-badge="home-visit">Visitante (Home)</span>
+                <span class="badge" data-badge="dopamine-explorer">Explorador Dopamina</span>
+                <span class="badge" data-badge="mechanisms-master">Mestre dos Mecanismos</span>
+                <span class="badge" data-badge="tools-expert">Especialista em Ferramentas</span>
+                <span class="badge" data-badge="gamification-guru">Guru da Gamificação</span>
+                <span class="badge" data-badge="awareness-advocate">Defensor da Conscientização</span>
+                <span class="badge" data-badge="quiz-master">Mestre do Quiz</span>
+            </div>
+        </div>
+
+        <div class="gamification-status card">
+            <h3>Ranking Global de Exploradores</h3>
+            <p>Compare seu progresso com outros usuários (simulados).</p>
+
+            <ul id="ranking-list">
+                <!-- Ranking items will be loaded here by JS -->
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Vícios Digitais e Engajamento Psicológico. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
