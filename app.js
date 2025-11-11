@@ -30,6 +30,37 @@ const BADGES_DEFINITIONS = {
 
 const RANKING_SIZE = 5; // Número de usuários no ranking simulado
 
+function detectPageId() {
+  const meta = document.querySelector('meta[name="page-id"]')?.content?.trim();
+  if (meta) return meta;
+
+  const sectionId = document.querySelector('.page-content')?.id?.trim();
+  if (sectionId) return sectionId;
+
+  const file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  const name = file.replace(/\.html?$/, '');
+  return name === 'index' ? 'home' : name;
+}
+
+function setProgress(id, pctNumber) {
+  const bar = document.getElementById(id);
+  if (bar) {
+    const pct = Math.max(0, Math.min(100, Math.round(pctNumber)));
+    bar.style.width = pct + '%';
+    bar.textContent = pct + '%';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburger = document.getElementById('hamburger-menu');
+  const mainNavMenu = document.getElementById('main-nav-menu');
+  hamburger?.addEventListener('click', () => mainNavMenu?.classList.toggle('active'));
+
+  // Detecta a página atual para pontuar no ranking
+  const currentPageId = detectPageId();
+  updateGamification(currentPageId);
+});
+
 // Funções de Gerenciamento de Páginas e Navegação
 function showPage(pageId) {
     pages.forEach(page => page.classList.remove('active'));
@@ -37,25 +68,36 @@ function showPage(pageId) {
 
     if (targetPage) {
         targetPage.classList.add('active');
+        console.log('Página carregada:', pageId); // log quando a página é identificada como carregada
         updateNavLinkState(pageId);
-        mainNavMenu.classList.remove('active'); // Fecha o menu hambúrguer
+        if (mainNavMenu) mainNavMenu.classList.remove('active'); // Fecha o menu hambúrguer (proteção null)
         updateGamification(pageId); // Atualiza gamificação ao visitar página
         window.scrollTo(0, 0); // Rola para o topo da página
     }
 }
 
 function updateNavLinkState(activePageId) {
-    navLinks.forEach(link => {
+    document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
 
-        if (link.getAttribute('href') === '#' + activePageId) {
+        const href = link.getAttribute('href') || '';
+        const asUrlPath = new URL(href, location.href).pathname;
+        const isSameFile = asUrlPath === location.pathname;
+
+        const asHash = href.startsWith('#') ? href.slice(1) : null;
+        const isSameHash = asHash && asHash === activePageId;
+
+        if (isSameFile || isSameHash) {
             link.classList.add('active');
         }
     });
 }
+
 // Funções de Gamificação (Pontos, Badges, Ranking)
 function saveProgress() {
+    console.log('saveProgress: persistindo userProgress', userProgress); // <-- log adicionado
     localStorage.setItem('userProgress', JSON.stringify(userProgress));
+    console.log('saveProgress: persistido em localStorage');
 }
 
 function loadProgress() {
@@ -66,64 +108,85 @@ function loadProgress() {
 }
 
 function updateGamification(pageId) {
-    const pageName = pageId.replace('-', '-'); // Ex: 'home-page' -> 'home-visit'
-    let badgeKey = '';
+    console.log('updateGamification chamado', { pageId, visitedPages: userProgress.visitedPages });
 
+    let badgeKey = '';
     if (pageId === 'home') badgeKey = 'home-visit';
     else if (pageId === 'dopaminergic-system') badgeKey = 'dopamine-explorer';
     else if (pageId === 'psychological-mechanisms') badgeKey = 'mechanisms-master';
     else if (pageId === 'stimulation-tools') badgeKey = 'tools-expert';
     else if (pageId === 'gamification') badgeKey = 'gamification-guru';
     else if (pageId === 'awareness') badgeKey = 'awareness-advocate';
-    // 'quiz-master' badge is awarded after quiz completion
 
+    // Usa apenas localStorage: verifica se já visitou (persistente)
     if (!userProgress.visitedPages[pageId]) {
+        console.log('Salvando visita de página (localStorage):', pageId); // log quando salva a visita
         userProgress.visitedPages[pageId] = true;
-        const pointsEarned = 25; // Pontos por visitar uma nova página
-        userProgress.points += pointsEarned;
-        console.log(`Ganhou ${pointsEarned} pontos por visitar ${pageId}! Total: ${userProgress.points}`);
 
+        const pointsEarned = 25; // Pontos por visitar uma nova página (persistente)
+        userProgress.points += pointsEarned;
+        console.log(`Ganhou ${pointsEarned} pontos por visitar ${pageId}! Total agora: ${userProgress.points}`);
+
+        // Concede badge (apenas se ainda não possuir)
         if (badgeKey && BADGES_DEFINITIONS[badgeKey] && !userProgress.badges.includes(badgeKey)) {
             userProgress.badges.push(badgeKey);
             userProgress.points += BADGES_DEFINITIONS[badgeKey].points; // Pontos extras pelo badge
+            console.log('Badge concedido', badgeKey, BADGES_DEFINITIONS[badgeKey]);
             alert(`Parabéns! Você desbloqueou o badge "${BADGES_DEFINITIONS[badgeKey].name}" e ganhou ${BADGES_DEFINITIONS[badgeKey].points} pontos!`);
         }
-    
-        saveProgress();
+
+        saveProgress(); // salva pontos e badges no localStorage
         renderGamificationStatus();
+    } else {
+        console.log('Página já visitada (localStorage), não concede pontos:', pageId);
+        renderGamificationStatus();
+    }
+
+    if (pageId === 'ranking') {
+        console.log('updateGamification detectou pageId === ranking');
+        renderRanking();
+        const rankingUserPoints = document.getElementById('ranking-user-points');
+        if (rankingUserPoints) {
+            rankingUserPoints.textContent = `${userProgress.points} Pontos`;
+            console.log('ranking-user-points atualizado', userProgress.points);
+        } else {
+            console.warn('Elemento #ranking-user-points não encontrado');
+        }
     }
 }
 
 function renderGamificationStatus() {
-    document.getElementById('user-points').textContent = userProgress.points;
+    // pontos
+    const pointsEl = document.getElementById('user-points');
+    if (pointsEl) pointsEl.textContent = userProgress.points;
 
-    // Atualiza barra de progresso (ex: baseada nos badges desbloqueados)
+    // progresso por badges (se existir)
     const totalBadges = Object.keys(BADGES_DEFINITIONS).length;
     const unlockedBadgesCount = userProgress.badges.length;
-    
-    let progressPercentage = (unlockedBadgesCount / totalBadges) * 100;
-    progressPercentage = Math.min(progressPercentage, 100); // Garante que não excede 100%
+    const progressPercentage = (unlockedBadgesCount / totalBadges) * 100;
 
-    const progressBar = document.getElementById('knowledge-progress');
-    progressBar.style.width = `${progressPercentage}%`;
-    progressBar.textContent = `${Math.round(progressPercentage)}%`;
+    setProgress('knowledge-progress', progressPercentage);
 
-    // Renderiza badges
+    // badges (se existir)
     const badgesContainer = document.getElementById('user-badges');
-    badgesContainer.innerHTML = ''; // Limpa antes de renderizar
-
-    for (const key in BADGES_DEFINITIONS) {
-        const badgeElement = document.createElement('span');
-        badgeElement.classList.add('badge');
-        badgeElement.textContent = BADGES_DEFINITIONS[key].name;
-
-        if (userProgress.badges.includes(key)) {
-            badgeElement.classList.add('unlocked');
+    if (badgesContainer) {
+        badgesContainer.innerHTML = '';
+        for (const key in BADGES_DEFINITIONS) {
+            const badgeElement = document.createElement('span');
+            badgeElement.classList.add('badge');
+            badgeElement.textContent = BADGES_DEFINITIONS[key].name;
+            if (userProgress.badges.includes(key)) {
+                badgeElement.classList.add('unlocked');
+            }
+            badgesContainer.appendChild(badgeElement);
         }
-        badgesContainer.appendChild(badgeElement);
     }
-    renderRanking();
+
+    // ranking (se existir)
+    const rankingList = document.getElementById('ranking-list');
+    if (rankingList) renderRanking();
 }
+
 
 function generateRandomRanking() {
     let ranking = [];
