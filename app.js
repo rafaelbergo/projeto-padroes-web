@@ -61,43 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
   updateGamification(currentPageId);
 });
 
-// Funções de Gerenciamento de Páginas e Navegação
-function showPage(pageId) {
-    pages.forEach(page => page.classList.remove('active'));
-    const targetPage = document.getElementById(pageId);
-
-    if (targetPage) {
-        targetPage.classList.add('active');
-        console.log('Página carregada:', pageId); // log quando a página é identificada como carregada
-        updateNavLinkState(pageId);
-        if (mainNavMenu) mainNavMenu.classList.remove('active'); // Fecha o menu hambúrguer (proteção null)
-        updateGamification(pageId); // Atualiza gamificação ao visitar página
-        window.scrollTo(0, 0); // Rola para o topo da página
-    }
-}
-
-function updateNavLinkState(activePageId) {
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-
-        const href = link.getAttribute('href') || '';
-        const asUrlPath = new URL(href, location.href).pathname;
-        const isSameFile = asUrlPath === location.pathname;
-
-        const asHash = href.startsWith('#') ? href.slice(1) : null;
-        const isSameHash = asHash && asHash === activePageId;
-
-        if (isSameFile || isSameHash) {
-            link.classList.add('active');
-        }
-    });
-}
-
 // Funções de Gamificação (Pontos, Badges, Ranking)
 function saveProgress() {
-    console.log('saveProgress: persistindo userProgress', userProgress); // <-- log adicionado
     localStorage.setItem('userProgress', JSON.stringify(userProgress));
-    console.log('saveProgress: persistido em localStorage');
 }
 
 function loadProgress() {
@@ -186,7 +152,6 @@ function renderGamificationStatus() {
     const rankingList = document.getElementById('ranking-list');
     if (rankingList) renderRanking();
 }
-
 
 function generateRandomRanking() {
     let ranking = [];
