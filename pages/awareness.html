@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vícios Digitais e Engajamento: Uma Análise Psicológica</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <script src="../js/app.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Vícios Digitais</h1>
+
+            <nav>
+                <div class="hamburger" id="hamburger-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+
+                <ul class="nav-menu" id="main-nav-menu">
+                    <li><a href="home.html" class="nav-link">Home</a></li>
+                    <li><a href="dopaminergic-system.html" class="nav-link">Sistema Dopaminérgico</a></li>
+                    <li><a href="psychological-mechanisms.html" class="nav-link">Mecanismos Psicológicos</a></li>
+                    <li><a href="stimulation-tools.html" class="nav-link">Ferramentas de Estimulação</a></li>
+                    <li><a href="gamification.html" class="nav-link">Gamificação</a></li>
+                    <li><a href="awareness.html" class="nav-link active">Conscientização</a></li>
+                    <li><a href="conclusion.html" class="nav-link">Conclusão</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section id="awareness" class="page-content active">
+            <h2>Conscientização e Recuperação do Controle</h2>
+
+            <p>Reconhecer os mecanismos por trás do engajamento excessivo é o primeiro e mais importante passo para
+                desenvolver uma relação mais saudável com a tecnologia. A conscientização nos permite fazer escolhas
+                intencionais, em vez de reagir passivamente aos estímulos digitais.</p>
+
+            <h3>Estratégias para uma Vida Digital Mais Equilibrada:</h3>
+
+            <ul>
+                <li><strong>Auditoria Digital:</strong> Monitore seu tempo de tela e quais aplicativos você mais usa.
+                </li>
+                <li><strong>Notificações Inteligentes:</strong> Desligue notificações desnecessárias e agrupe as
+                    importantes.</li>
+                <li><strong>Limites de Tempo:</strong> Use ferramentas para limitar o tempo em aplicativos específicos.
+                </li>
+                <li><strong>Desconexão Regular:</strong> Estabeleça períodos sem telas (ex: antes de dormir, durante
+                    refeições).</li>
+                <li><strong>Foco em Conteúdo de Qualidade:</strong> Priorize plataformas que agreguem valor real, em vez
+                    de apenas preencher o tempo.</li>
+                <li><strong>Reflexão Crítica:</strong> Pergunte-se: "Por que estou usando este aplicativo agora? Qual é
+                    o meu objetivo?"</li>
+                <li><strong>Batalha contra os Dark Patterns:</strong> Aprenda a identificar e a se proteger de táticas
+                    manipuladoras de design.</li>
+            </ul>
+
+            <h3>Quiz Reflexivo sobre Conscientização</h3>
+            <p>Teste seu conhecimento e reflita sobre seus hábitos digitais.</p>
+
+            <div class="quiz-question">
+                <!-- Falta corrigir o envio e verificacao das respostas do quiz-->
+                <p>1. Qual mecanismo psicológico se beneficia da imprevisibilidade das recompensas digitais?</p>
+
+                <div class="quiz-options">
+                    <label><input type="radio" name="q1" value="a"> FOMO</label>
+                    <label><input type="radio" name="q1" value="b"> Prova Social</label>
+                    <label><input type="radio" name="q1" value="c"> Recompensas Variáveis</label>
+                    <label><input type="radio" name="q1" value="d"> Reciprocidade</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>2. Uma estratégia eficaz para reduzir o vício digital é:</p>
+
+                <div class="quiz-options">
+                    <label><input type="radio" name="q2" value="a"> Ativar todas as notificações</label>
+                    <label><input type="radio" name="q2" value="b"> Ignorar o tempo de tela</label>
+                    <label><input type="radio" name="q2" value="c"> Estabelecer períodos de desconexão</label>
+                    <label><input type="radio" name="q2" value="d"> Focar apenas em aplicativos de
+                        entretenimento</label>
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <p>3. O que são "Dark Patterns" no design digital?</p>
+
+                <div class="quiz-options">
+                    <label><input type="radio" name="q3" value="a"> Elementos de design que melhoram a
+                        acessibilidade</label>
+                    <label><input type="radio" name="q3" value="b"> Táticas de interface que manipulam o usuário a fazer
+                        algo não intencional</label>
+                    <label><input type="radio" name="q3" value="c"> Padrões de cores escuras para economizar
+                        bateria</label>
+                    <label><input type="radio" name="q3" value="d"> Design inovador que promove a criatividade</label>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="submitQuiz()">Ver Resultados do Quiz</button>
+
+            <div id="quiz-feedback"></div>
+        </section>
+
+        <aside class="sidebar">
+            <h3>Seu Progresso</h3>
+            <div class="gamification-stats">
+                <p>Pontos: <strong id="current-points">0</strong></p>
+                <p>Multiplicador: <strong id="current-multiplier">x1</strong></p>
+                <p>Próximo Badge: <strong id="next-badge-info">Nenhum</strong></p>
+                <p>Próximo Milestone: <strong id="next-milestone-info">Nenhum</strong></p>
+            </div>
+
+            <h4>Progresso Geral</h4>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="overall-progress-bar" role="progressbar" aria-valuenow="0"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <h4>Badges Desbloqueados</h4>
+            <ul class="badges-list" id="unlocked-badges-list">
+                <li class="badge-item"><span class="icon">🔒</span> Visitante</li>
+                <li class="badge-item"><span class="icon">🔒</span> Explorador</li>
+                <li class="badge-item"><span class="icon">🔒</span> Mestre</li>
+                <li class="badge-item"><span class="icon">🔒</span> Especialista</li>
+                <li class="badge-item"><span class="icon">🔒</span> Guru</li>
+                <li class="badge-item"><span class="icon">🔒</span> Defensor</li>
+                <li class="badge-item"><span class="icon">🔒</span> Mestre do Quiz</li>
+            </ul>
+
+            <div class="daily-challenge">
+                <h4>Desafio Diário</h4>
+                <p id="daily-challenge-text">Visite 3 páginas para ganhar 50 pontos bônus!</p>
+                <button id="complete-daily-challenge-btn" disabled>Completar Desafio Diário</button>
+            </div>
+
+            <div class="controls">
+                <h4>Configurações & Ferramentas</h4>
+                <div class="toggle-switch">
+                    <label for="sound-toggle">Som de Celebração</label>
+                    <label class="switch">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-switch">
+                    <label for="vibration-toggle">Vibração (Celular)</label>
+                    <label class="switch">
+                        <input type="checkbox" id="vibration-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button id="show-analytics-btn">Ver Dashboard de Analytics</button>
+                <button id="reset-game-btn" style="background-color: #dc3545;">Reiniciar Jogo</button>
+            </div>
+        </aside>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; Vícios Digitais e Engajamento Psicológico. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

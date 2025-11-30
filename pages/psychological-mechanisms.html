@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vícios Digitais e Engajamento: Uma Análise Psicológica</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <script src="../js/app.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Vícios Digitais</h1>
+
+            <nav>
+                <div class="hamburger" id="hamburger-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+
+                <ul class="nav-menu" id="main-nav-menu">
+                    <li><a href="home.html" class="nav-link">Home</a></li>
+                    <li><a href="dopaminergic-system.html" class="nav-link">Sistema Dopaminérgico</a></li>
+                    <li><a href="psychological-mechanisms.html" class="nav-link active">Mecanismos Psicológicos</a></li>
+                    <li><a href="stimulation-tools.html" class="nav-link">Ferramentas de Estimulação</a></li>
+                    <li><a href="gamification.html" class="nav-link">Gamificação</a></li>
+                    <li><a href="awareness.html" class="nav-link">Conscientização</a></li>
+                    <li><a href="conclusion.html" class="nav-link">Conclusão</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section id="psychological-mechanisms" class="page-content active">
+            <h2>Mecanismos Psicológicos de Engajamento</h2>
+            <p>Plataformas digitais são meticulosamente projetadas utilizando princípios da psicologia comportamental
+                para
+                maximizar o engajamento do usuário. Entender esses mecanismos é o primeiro passo para recuperar o
+                controle
+                sobre nossos hábitos digitais.</p>
+
+            <h3>Principais Mecanismos:</h3>
+
+            <div class="grid-3-cols">
+                <div class="card">
+                    <h4>1. FOMO (Fear Of Missing Out)</h4>
+                    <p>O medo de perder algo importante ou divertido que outras pessoas estão experimentando.
+                        Notificações
+                        constantes e a exibição de atividades de amigos alimentam esse medo, incentivando a verificação
+                        contínua.</p>
+                </div>
+
+                <div class="card">
+                    <h4>2. Recompensas Variáveis e Intermitentes</h4>
+                    <p>Baseado nos estudos de Skinner, a imprevisibilidade da recompensa (ex: um "like" aleatório, um
+                        novo
+                        e-mail) torna o comportamento de busca mais viciante do que recompensas consistentes. É a base
+                        das
+                        "caça-níqueis digitais".</p>
+                </div>
+
+                <div class="card">
+                    <h4>3. Prova Social</h4>
+                    <p>A tendência de seguir as ações e opiniões de grupos maiores. Ver muitas pessoas usando um
+                        aplicativo
+                        ou curtindo um post cria a percepção de que é algo valioso ou socialmente aceito, estimulando a
+                        adesão.</p>
+                </div>
+
+                <div class="card">
+                    <h4>4. Reciprocidade</h4>
+                    <p>A necessidade de retribuir um favor. Quando alguém interage com seu conteúdo, você se sente
+                        compelido
+                        a interagir de volta, criando um ciclo de engajamento.</p>
+                </div>
+
+                <div class="card">
+                    <h4>5. Escassez e Urgência</h4>
+                    <p>Ofertas limitadas, contagens regressivas ou conteúdos que "desaparecem" após um tempo. Isso cria
+                        um
+                        senso de necessidade e impulsiona a ação imediata.</p>
+                </div>
+
+                <div class="card">
+                    <h4>6. Investimento e Compromisso</h4>
+                    <p>Quanto mais tempo, esforço ou dados você investe em uma plataforma (criar um perfil complexo,
+                        postar
+                        fotos), mais difícil é abandoná-la, devido ao "custo irrecuperável".</p>
+                </div>
+            </div>
+
+            <h3>Simulador Interativo de Mecanismos Psicológicos</h3>
+            <p>Selecione um cenário e veja como um mecanismo psicológico pode ser aplicado:</p>
+
+            <div id="simulator-options">
+                <!-- Falta implementar cada cenário-->
+                <div class="simulator-option" data-mechanism="fomo">
+                    <h4>Cenário: Notificação de Amigos</h4>
+                    <p>Você vê uma notificação "Seus amigos estão fazendo X".</p>
+                </div>
+
+                <div class="simulator-option" data-mechanism="variable-rewards">
+                    <h4>Cenário: Rolagem Infinita</h4>
+                    <p>Você rola a tela e novas postagens (boas ou ruins) aparecem aleatoriamente.</p>
+                </div>
+
+                <div class="simulator-option" data-mechanism="social-proof">
+                    <h4>Cenário: Artigo Popular</h4>
+                    <p>Você vê um artigo com "1 Milhão de Visualizações".</p>
+                </div>
+            </div>
+
+            <div id="simulator-output">
+                <p>Clique em um cenário acima para ver o efeito do mecanismo psicológico.</p>
+            </div>
+        </section>
+        <aside class="sidebar">
+            <h3>Seu Progresso</h3>
+            <div class="gamification-stats">
+                <p>Pontos: <strong id="current-points">0</strong></p>
+                <p>Multiplicador: <strong id="current-multiplier">x1</strong></p>
+                <p>Próximo Badge: <strong id="next-badge-info">Nenhum</strong></p>
+                <p>Próximo Milestone: <strong id="next-milestone-info">Nenhum</strong></p>
+            </div>
+
+            <h4>Progresso Geral</h4>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="overall-progress-bar" role="progressbar" aria-valuenow="0"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <h4>Badges Desbloqueados</h4>
+            <ul class="badges-list" id="unlocked-badges-list">
+                <li class="badge-item"><span class="icon">🔒</span> Visitante</li>
+                <li class="badge-item"><span class="icon">🔒</span> Explorador</li>
+                <li class="badge-item"><span class="icon">🔒</span> Mestre</li>
+                <li class="badge-item"><span class="icon">🔒</span> Especialista</li>
+                <li class="badge-item"><span class="icon">🔒</span> Guru</li>
+                <li class="badge-item"><span class="icon">🔒</span> Defensor</li>
+                <li class="badge-item"><span class="icon">🔒</span> Mestre do Quiz</li>
+            </ul>
+
+            <div class="daily-challenge">
+                <h4>Desafio Diário</h4>
+                <p id="daily-challenge-text">Visite 3 páginas para ganhar 50 pontos bônus!</p>
+                <button id="complete-daily-challenge-btn" disabled>Completar Desafio Diário</button>
+            </div>
+
+            <div class="controls">
+                <h4>Configurações & Ferramentas</h4>
+                <div class="toggle-switch">
+                    <label for="sound-toggle">Som de Celebração</label>
+                    <label class="switch">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-switch">
+                    <label for="vibration-toggle">Vibração (Celular)</label>
+                    <label class="switch">
+                        <input type="checkbox" id="vibration-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button id="show-analytics-btn">Ver Dashboard de Analytics</button>
+                <button id="reset-game-btn" style="background-color: #dc3545;">Reiniciar Jogo</button>
+            </div>
+        </aside>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; Vícios Digitais e Engajamento Psicológico. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

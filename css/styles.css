@@ -1,16 +1,25 @@
 /* Variáveis CSS para Cores e Fontes: */
 
 :root {
-    --primary-color: #4A00B7; /* Roxo escuro */
-    --secondary-color: #8C00F0; /* Roxo vibrante */
-    --accent-color: #00D1FF; /* Azul claro para destaque */
+    --primary-color: #4A00B7;
+    /* Roxo escuro */
+    --secondary-color: #8C00F0;
+    /* Roxo vibrante */
+    --accent-color: #00D1FF;
+    /* Azul claro para destaque */
     --text-color: #333;
     --light-text-color: #f4f4f4;
     --background-color: #f0f2f5;
     --card-background: #ffffff;
-    --dopamine-color: #FF69B4; /* Rosa choque */
+    --dopamine-color: #FF69B4;
+    /* Rosa choque */
     --font-main: 'Roboto', sans-serif;
     --font-headings: 'Montserrat', sans-serif;
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --border-radius: 8px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --celebration-duration: 3s;
 }
 
 /* Estilos Globais e Reset Básico: */
@@ -28,18 +37,31 @@ body {
     scroll-behavior: smooth;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-headings);
     color: var(--primary-color);
     margin-bottom: 0.8em;
     line-height: 1.2;
 }
 
-h1 { font-size: 2.5em; }
+h1 {
+    font-size: 2.5em;
+}
 
-h2 { font-size: 2em; color: var(--secondary-color); }
+h2 {
+    font-size: 2em;
+    color: var(--secondary-color);
+}
 
-h3 { font-size: 1.5em; color: var(--primary-color); }
+h3 {
+    font-size: 1.5em;
+    color: var(--primary-color);
+}
 
 p {
     margin-bottom: 1em;
@@ -56,7 +78,7 @@ a:hover {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -149,7 +171,8 @@ main {
 }
 
 .page-content {
-    display: none; /* Oculta todas as páginas por padrão */
+    display: none;
+    /* Oculta todas as páginas por padrão */
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -161,7 +184,8 @@ main {
 }
 
 .page-content.active {
-    display: block; /* Mostra a página ativa */
+    display: block;
+    /* Mostra a página ativa */
     opacity: 1;
     transform: translateY(0);
 }
@@ -246,9 +270,20 @@ main {
 }
 
 @keyframes dopaminePulse {
-    0% { transform: scale(0.1) translate(0, 0); opacity: 0.2; }
-    50% { transform: scale(1.2) translate(0, -50px); opacity: 1; }
-    100% { transform: scale(0.1) translate(0, -100px); opacity: 0; }
+    0% {
+        transform: scale(0.1) translate(0, 0);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: scale(1.2) translate(0, -50px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.1) translate(0, -100px);
+        opacity: 0;
+    }
 }
 
 /* Simulador de Mecanismos Psicológicos */
@@ -277,7 +312,8 @@ main {
 #simulator-output {
     margin-top: 20px;
     padding: 20px;
-    background-color: #e6e6fa; /* Lavanda */
+    background-color: #e6e6fa;
+    /* Lavanda */
     border-left: 5px solid var(--primary-color);
     border-radius: 5px;
     min-height: 100px;
@@ -453,7 +489,8 @@ main {
 }
 
 .badge::before {
-    content: '⭐'; /* Ícone de estrela */
+    content: '⭐';
+    /* Ícone de estrela */
     margin-right: 5px;
 }
 
@@ -499,19 +536,22 @@ footer {
 */
 @media (max-width: 768px) {
     .nav-menu {
-        display: none; /* Oculta o menu padrão em mobile */
+        display: none;
+        /* Oculta o menu padrão em mobile */
         flex-direction: column;
         width: 100%;
         background-color: var(--primary-color);
         position: absolute;
-        top: 70px; /* Altura do header */
+        top: 70px;
+        /* Altura do header */
         left: 0;
         padding: 15px 0;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .nav-menu.active {
-        display: flex; /* Mostra o menu quando ativo */
+        display: flex;
+        /* Mostra o menu quando ativo */
     }
 
     .nav-menu li {
@@ -525,7 +565,8 @@ footer {
     }
 
     .hamburger {
-        display: flex; /* Mostra o ícone de hambúrguer */
+        display: flex;
+        /* Mostra o ícone de hambúrguer */
     }
 
     .hero h1 {
@@ -536,11 +577,17 @@ footer {
         font-size: 1em;
     }
 
-    h1 { font-size: 2em; }
+    h1 {
+        font-size: 2em;
+    }
 
-    h2 { font-size: 1.5em; }
+    h2 {
+        font-size: 1.5em;
+    }
 
-    h3 { font-size: 1.2em; }
+    h3 {
+        font-size: 1.2em;
+    }
 
     .page-content {
         padding: 20px;

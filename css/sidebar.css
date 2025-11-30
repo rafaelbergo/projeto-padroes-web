@@ -1,0 +1,178 @@
+    main {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        column-gap: 10px;
+        row-gap: 10px;
+        align-items: start;
+    }
+
+    @media (max-width: 992px) {
+        main {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+        }
+
+        .sidebar {
+            order: -1;
+            /* Move sidebar to top on smaller screens */
+        }
+    }
+
+    .sidebar {
+        background-color: var(--card-bg);
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        position: sticky;
+
+    }
+
+    .sidebar h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        border-bottom: 1px solid var(--secondary-color);
+        padding-bottom: 0.5rem;
+    }
+
+    .gamification-stats p {
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .gamification-stats strong {
+        color: var(--secondary-color);
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        margin-top: 1rem;
+        height: 15px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background-color: var(--accent-color);
+        border-radius: 5px;
+        transition: width 0.5s ease-out;
+    }
+
+    .badges-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .badge-item {
+        background-color: #eee;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .badge-item.unlocked {
+        background-color: var(--secondary-color);
+        color: white;
+        font-weight: 600;
+    }
+
+    .badge-item .icon {
+        font-size: 1.1rem;
+    }
+
+    .daily-challenge {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #ccc;
+    }
+
+    .daily-challenge button {
+        width: 100%;
+        margin-top: 0.8rem;
+    }
+
+    .controls {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #ccc;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .controls button {
+        background-color: #6c757d;
+        width: 100%;
+    }
+
+    .controls button:hover {
+        background-color: #5a6268;
+    }
+
+    .controls .toggle-switch {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .controls .toggle-switch label {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked+.slider {
+        background-color: var(--secondary-color);
+    }
+
+    input:checked+.slider:before {
+        transform: translateX(20px);
+    }

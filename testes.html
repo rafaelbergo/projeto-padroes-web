@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vícios Digitais: Gamificação e Conscientização</title>
+    <meta name="description" content="Explore os mecanismos psicológicos e a gamificação por trás dos vícios digitais. Ganhe pontos, badges e celebre seu progresso!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset Básico */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary-color: #6a0dad; /* Roxo */
+            --secondary-color: #00bcd4; /* Ciano */
+            --accent-color: #ffeb3b; /* Amarelo */
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --celebration-duration: 3s;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Previne scroll horizontal devido a partículas */
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        header h1 {
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            main {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .sidebar {
+                order: -1; /* Move sidebar to top on smaller screens */
+            }
+        }
+
+        .content-area {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .content-area h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-area p {
+            margin-bottom: 1rem;
+        }
+
+        .content-area button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .content-area button:hover {
+            background-color: #00a0b8;
+            transform: translateY(-2px);
+        }
+
+        .content-area button:active {
+            transform: translateY(0);
+        }
+
+        .sidebar {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 2rem; /* Stick to top of viewport */
+        }
+
+        .sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .gamification-stats p {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .gamification-stats strong {
+            color: var(--secondary-color);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 1rem;
+            height: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-color);
+            border-radius: 5px;
+            transition: width 0.5s ease-out;
+        }
+
+        .badges-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge-item {
+            background-color: #eee;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .badge-item.unlocked {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .badge-item .icon {
+            font-size: 1.1rem;
+        }
+
+        .daily-challenge {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ccc;
+        }
+
+        .daily-challenge button {
+            width: 100%;
+            margin-top: 0.8rem;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ccc;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .controls button {
+            background-color: #6c757d;
+            width: 100%;
+        }
+
+        .controls button:hover {
+            background-color: #5a6268;
+        }
+
+        .controls .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .controls .toggle-switch label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--secondary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Celebration Overlay */
+        #celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        #celebration-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .celebration-message {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+            transform: translateY(-50px) scale(0.8);
+            opacity: 0;
+            animation: messageEnter var(--celebration-duration) cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            animation-delay: 0.2s;
+            text-align: center;
+        }
+
+        .points-display {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            transform: scale(0.5);
+            opacity: 0;
+            animation: pointsEnter var(--celebration-duration) cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            animation-delay: 0.5s;
+        }
+
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            opacity: 0;
+            animation: particleFall var(--celebration-duration) forwards;
+            will-change: transform, opacity;
+        }
+
+        .particle.confetti {
+            width: 10px;
+            height: 10px;
+            background-color: currentColor;
+            border-radius: 50%;
+            animation: particleFall var(--celebration-duration) forwards, particleRotate var(--celebration-duration) infinite linear;
+        }
+
+        .particle.star {
+            font-size: 20px;
+            color: var(--accent-color);
+            animation: particleFall var(--celebration-duration) forwards, particleTwinkle var(--celebration-duration) infinite alternate;
+        }
+
+        .particle.emoji {
+            font-size: 24px;
+            animation: particleFall var(--celebration-duration) forwards, emojiFloat var(--celebration-duration) infinite alternate;
+        }
+
+        /* Keyframe Animations */
+        @keyframes messageEnter {
+            0% { opacity: 0; transform: translateY(-50px) scale(0.8); }
+            30% { opacity: 1; transform: translateY(0) scale(1.1); }
+            60% { transform: scale(1); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes pointsEnter {
+            0% { opacity: 0; transform: scale(0.5); }
+            40% { opacity: 1; transform: scale(1.2); }
+            70% { transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes particleFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @keyframes particleRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes particleTwinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes emojiFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Milestone Modal */
+        #milestone-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        #milestone-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 500px;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #milestone-modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content .points-achieved {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #5a0a9e;
+        }
+
+        /* Analytics Dashboard */
+        #analytics-dashboard {
+            position: fixed;
+            top: 0;
+            right: -400px; /* Hidden by default */
+            width: 350px;
+            height: 100%;
+            background-color: var(--card-bg);
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+            z-index: 10001;
+            transition: right 0.4s ease-out;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        #analytics-dashboard.active {
+            right: 0;
+        }
+
+        #analytics-dashboard h3 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        #analytics-dashboard p {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        #analytics-dashboard strong {
+            color: var(--secondary-color);
+        }
+
+        #analytics-dashboard ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        #analytics-dashboard li {
+            background-color: #f0f0f0;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #analytics-dashboard .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        #analytics-dashboard .close-btn:hover {
+            color: var(--primary-color);
+        }
+
+        #analytics-dashboard button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        #analytics-dashboard button:hover {
+            background-color: #5a0a9e;
+        }
+
+        /* Accessibility: Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .celebration-message, .points-display, .particle, .modal-content,
+            #celebration-overlay, #milestone-modal, #analytics-dashboard {
+                animation: none !important;
+                transition: none !important;
+            }
+            .particle {
+                display: none !important; /* Hide particles entirely */
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vícios Digitais: Gamificação e Conscientização</h1>
+        <p>Descubra como a tecnologia nos engaja e aprenda a equilibrar sua vida digital.</p>
+    </header>
+
+    <main>
+        <section class="content-area" id="page-content">
+            <h2 id="page-title">Página Inicial: Introdução</h2>
+            <p id="page-text">Bem-vindo ao nosso projeto educacional sobre vícios digitais e os novos padrões comportamentais da sociedade. Aqui, exploraremos como empresas utilizam mecanismos psicológicos sofisticados para manter os usuários engajados, muitas vezes sem que percebam.</p>
+            <p>Navegue pelas seções para entender o sistema dopaminérgico, os mecanismos psicológicos e as ferramentas de estimulação que moldam nossa interação com a tecnologia. Ao explorar o site, você ganhará pontos e desbloqueará badges, demonstrando como a gamificação funciona na prática.</p>
+            <button id="next-page-btn">Explorar Sistema Dopaminérgico (Ganhe Pontos!)</button>
+            <button id="complete-quiz-btn" style="display: none;">Completar Quiz (Ganhe Pontos e Badge!)</button>
+        </section>
+
+        <aside class="sidebar">
+            <h3>Seu Progresso</h3>
+            <div class="gamification-stats">
+                <p>Pontos: <strong id="current-points">0</strong></p>
+                <p>Multiplicador: <strong id="current-multiplier">x1</strong></p>
+                <p>Próximo Badge: <strong id="next-badge-info">Nenhum</strong></p>
+                <p>Próximo Milestone: <strong id="next-milestone-info">Nenhum</strong></p>
+            </div>
+
+            <h4>Progresso Geral</h4>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="overall-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <h4>Badges Desbloqueados</h4>
+            <ul class="badges-list" id="unlocked-badges-list">
+                <li class="badge-item"><span class="icon">🔒</span> Visitante</li>
+                <li class="badge-item"><span class="icon">🔒</span> Explorador</li>
+                <li class="badge-item"><span class="icon">🔒</span> Mestre</li>
+                <li class="badge-item"><span class="icon">🔒</span> Especialista</li>
+                <li class="badge-item"><span class="icon">🔒</span> Guru</li>
+                <li class="badge-item"><span class="icon">🔒</span> Defensor</li>
+                <li class="badge-item"><span class="icon">🔒</span> Mestre do Quiz</li>
+            </ul>
+
+            <div class="daily-challenge">
+                <h4>Desafio Diário</h4>
+                <p id="daily-challenge-text">Visite 3 páginas para ganhar 50 pontos bônus!</p>
+                <button id="complete-daily-challenge-btn" disabled>Completar Desafio Diário</button>
+            </div>
+
+            <div class="controls">
+                <h4>Configurações & Ferramentas</h4>
+                <div class="toggle-switch">
+                    <label for="sound-toggle">Som de Celebração</label>
+                    <label class="switch">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-switch">
+                    <label for="vibration-toggle">Vibração (Celular)</label>
+                    <label class="switch">
+                        <input type="checkbox" id="vibration-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button id="show-analytics-btn">Ver Dashboard de Analytics</button>
+                <button id="reset-game-btn" style="background-color: #dc3545;">Reiniciar Jogo</button>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Projeto Educacional: Vícios Digitais. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Celebration Overlay -->
+    <div id="celebration-overlay" aria-live="polite" aria-atomic="true">
+        <div class="celebration-message" role="status"></div>
+        <div class="points-display" role="status"></div>
+        <div class="particles-container"></div>
+    </div>
+
+    <!-- Milestone Modal -->
+    <div id="milestone-modal" role="dialog" aria-modal="true" aria-labelledby="milestone-modal-title" aria-describedby="milestone-modal-description">
+        <div class="modal-content">
+            <h3 id="milestone-modal-title">🎉 Milestone Alcançado! 🎉</h3>
+            <p id="milestone-modal-description">Você atingiu um novo marco em sua jornada!</p>
+            <div class="points-achieved" id="milestone-modal-points"></div>
+            <button id="close-milestone-modal">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Analytics Dashboard -->
+    <div id="analytics-dashboard" role="complementary" aria-labelledby="analytics-dashboard-title">
+        <button class="close-btn" id="close-analytics-btn" aria-label="Fechar Dashboard">&times;</button>
+        <h3 id="analytics-dashboard-title">Dashboard de Analytics</h3>
+        <p>Total de Pontos Ganhos: <strong id="analytics-total-points">0</strong></p>
+        <p>Badges Desbloqueados: <strong id="analytics-badges-unlocked">0</strong> / 7</p>
+        <p>Milestones Alcançados: <strong id="analytics-milestones-achieved">0</strong> / 5</p>
+        <p>Tempo de Sessão: <strong id="analytics-session-time">0s</strong></p>
+        <h4>Eventos Mais Celebrados:</h4>
+        <ul id="analytics-most-celebrated">
+            <li>Nenhum evento registrado ainda.</li>
+        </ul>
+        <button id="export-analytics-btn">Exportar Dados (JSON)</button>
+    </div>
+
+    <script>
+        // ====================================================================================================
+        // JAVASCRIPT MODULAR
+        // ====================================================================================================
+
+        // --- 1. AnalyticsTracker Module ---
+        // Gerencia o registro e a exportação de eventos de usuário e métricas de engajamento.
+        const AnalyticsTracker = (() => {
+            let events = [];
+            let sessionStartTime = Date.now();
+            const STORAGE_KEY = 'gamification_analytics';
+
+            /**
+             * Carrega eventos salvos do localStorage.
+             */
+            const loadEvents = () => {
+                const storedEvents = localStorage.getItem(STORAGE_KEY);
+                if (storedEvents) {
+                    events = JSON.parse(storedEvents);
+                }
+            };
+
+            /**
+             * Salva os eventos atuais no localStorage.
+             */
+            const saveEvents = () => {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+            };
+
+            /**
+             * Registra um novo evento.
+             * @param {string} eventName - Nome do evento (ex: 'pointsEarned', 'badgeUnlocked').
+             * @param {object} data - Dados adicionais do evento.
+             */
+            const track = (eventName, data = {}) => {
+                const event = {
+                    timestamp: Date.now(),
+                    eventName,
+                    ...data
+                };
+                events.push(event);
+                saveEvents();
+                // console.log('Analytics Tracked:', event);
+            };
+
+            /**
+             * Calcula e retorna métricas de engajamento.
+             * @returns {object} Objeto com as métricas calculadas.
+             */
+            const getMetrics = () => {
+                const totalPoints = events.filter(e => e.eventName === 'pointsEarned').reduce((sum, e) => sum + (e.points || 0), 0);
+                const badgesUnlocked = new Set(events.filter(e => e.eventName === 'badgeUnlocked').map(e => e.badgeId)).size;
+                const milestonesAchieved = new Set(events.filter(e => e.eventName === 'milestoneAchieved').map(e => e.milestoneId)).size;
+                const sessionDuration = Math.floor((Date.now() - sessionStartTime) / 1000); // em segundos
+
+                const eventCounts = events.reduce((acc, event) => {
+                    acc[event.eventName] = (acc[event.eventName] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const sortedEvents = Object.entries(eventCounts).sort(([, countA], [, countB]) => countB - countA);
+                const mostCelebrated = sortedEvents.slice(0, 3).map(([name, count]) => `${name} (${count}x)`);
+
+                return {
+                    totalPoints,
+                    badgesUnlocked,
+                    milestonesAchieved,
+                    sessionDuration,
+                    mostCelebrated
+                };
+            };
+
+            /**
+             * Exporta todos os dados de eventos como uma string JSON.
+             * @returns {string} String JSON dos eventos.
+             */
+            const exportData = () => {
+                return JSON.stringify(events, null, 2);
+            };
+
+            /**
+             * Reseta todos os dados de analytics.
+             */
+            const reset = () => {
+                events = [];
+                sessionStartTime = Date.now();
+                localStorage.removeItem(STORAGE_KEY);
+                track('analyticsReset');
+            };
+
+            // Inicializa ao carregar o módulo
+            loadEvents();
+            track('sessionStart');
+
+            return {
+                track,
+                getMetrics,
+                exportData,
+                reset
+            };
+        })();
+
+        // --- 2. GamificationManager Module ---
+        // Gerencia o estado do jogo (pontos, badges, milestones, desafios diários) e emite eventos.
+        const GamificationManager = (() => {
+            let state = {
+                points: 0,
+                badges: [], // Array de IDs de badges desbloqueados
+                milestones: {}, // { milestoneId: true } para milestones alcançados
+                dailyChallenge: {
+                    completed: false,
+                    pagesVisitedToday: 0
+                },
+                multiplier: 1,
+                lastDailyReset: new Date().toDateString() // Para resetar o desafio diário
+            };
+
+            // Configurações de Badges
+            const badgesConfig = [
+                { id: 'visitor', name: 'Visitante', threshold: 1, celebrationType: 'points', icon: '👋' },
+                { id: 'explorer', name: 'Explorador', threshold: 50, celebrationType: 'badge', icon: '🧭' },
+                { id: 'master', name: 'Mestre', threshold: 150, celebrationType: 'badge', icon: '🏆' },
+                { id: 'specialist', name: 'Especialista', threshold: 300, celebrationType: 'badge', icon: '🧠' },
+                { id: 'guru', name: 'Guru', threshold: 500, celebrationType: 'badge', icon: '🧘' },
+                { id: 'defender', name: 'Defensor', threshold: 750, celebrationType: 'badge', icon: '🛡️' },
+                { id: 'quiz_master', name: 'Mestre do Quiz', threshold: null, celebrationType: 'badge', icon: '🎓' } // Desbloqueado por ação específica
+            ];
+
+            // Configurações de Milestones
+            const milestonesConfig = [
+                { id: 'm100', threshold: 100, message: 'Você alcançou 100 pontos!', celebrationType: 'milestone' },
+                { id: 'm250', threshold: 250, message: 'Você alcançou 250 pontos!', celebrationType: 'milestone' },
+                { id: 'm500', threshold: 500, message: 'Você alcançou 500 pontos!', celebrationType: 'milestone' },
+                { id: 'm750', threshold: 750, message: 'Você alcançou 750 pontos!', celebrationType: 'milestone' },
+                { id: 'm1000', threshold: 1000, message: 'Você alcançou 1000 pontos! Incrível!', celebrationType: 'milestone' }
+            ];
+
+            const dailyChallengeConfig = {
+                pagesToVisit: 3,
+                bonusPoints: 50
+            };
+
+            const STORAGE_KEY = 'gamification_state';
+            const eventTarget = new EventTarget(); // Para emitir eventos personalizados
+
+            /**
+             * Carrega o estado do jogo do localStorage.
+             */
+            const loadState = () => {
+                const storedState = localStorage.getItem(STORAGE_KEY);
+                if (storedState) {
+                    state = JSON.parse(storedState);
+                }
+                // Verifica e reseta o desafio diário se a data mudou
+                const today = new Date().toDateString();
+                if (state.lastDailyReset !== today) {
+                    state.dailyChallenge = { completed: false, pagesVisitedToday: 0 };
+                    state.lastDailyReset = today;
+                    saveState();
+                }
+            };
+
+            /**
+             * Salva o estado atual do jogo no localStorage.
+             */
+            const saveState = () => {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            };
+
+            /**
+             * Adiciona pontos ao jogador, aplicando multiplicadores e verificando desbloqueios.
+             * @param {number} baseAmount - Quantidade base de pontos a adicionar.
+             * @param {number} [multiplier=1] - Multiplicador adicional para esta ação.
+             */
+            const addPoints = (baseAmount, actionMultiplier = 1) => {
+                const actualPoints = baseAmount * state.multiplier * actionMultiplier;
+                state.points += actualPoints;
+                saveState();
+                eventTarget.dispatchEvent(new CustomEvent('pointsEarned', { detail: { points: actualPoints, totalPoints: state.points } }));
+                AnalyticsTracker.track('pointsEarned', { points: actualPoints, totalPoints: state.points });
+                checkBadges();
+                checkMilestones();
+            };
+
+            /**
+             * Desbloqueia um badge específico.
+             * @param {string} badgeId - ID do badge a ser desbloqueado.
+             */
+            const unlockBadge = (badgeId) => {
+                if (!state.badges.includes(badgeId)) {
+                    state.badges.push(badgeId);
+                    saveState();
+                    const badge = badgesConfig.find(b => b.id === badgeId);
+                    eventTarget.dispatchEvent(new CustomEvent('badgeUnlocked', { detail: { badgeId, badgeName: badge.name, celebrationType: badge.celebrationType } }));
+                    AnalyticsTracker.track('badgeUnlocked', { badgeId, badgeName: badge.name });
+                }
+            };
+
+            /**
+             * Verifica se novos badges foram desbloqueados com base nos pontos atuais.
+             */
+            const checkBadges = () => {
+                badgesConfig.forEach(badge => {
+                    if (badge.threshold !== null && state.points >= badge.threshold && !state.badges.includes(badge.id)) {
+                        unlockBadge(badge.id);
+                    }
+                });
+            };
+
+            /**
+             * Verifica se novos milestones foram alcançados com base nos pontos atuais.
+             */
+            const checkMilestones = () => {
+                milestonesConfig.forEach(milestone => {
+                    if (state.points >= milestone.threshold && !state.milestones[milestone.id]) {
+                        state.milestones[milestone.id] = true;
+                        saveState();
+                        eventTarget.dispatchEvent(new CustomEvent('milestoneAchieved', { detail: { milestoneId: milestone.id, message: milestone.message, points: milestone.threshold, celebrationType: milestone.celebrationType } }));
+                        AnalyticsTracker.track('milestoneAchieved', { milestoneId: milestone.id, points: milestone.threshold });
+                    }
+                });
+            };
+
+            /**
+             * Incrementa o contador de páginas visitadas para o desafio diário.
+             */
+            const incrementDailyPagesVisited = () => {
+                if (!state.dailyChallenge.completed) {
+                    state.dailyChallenge.pagesVisitedToday++;
+                    saveState();
+                    eventTarget.dispatchEvent(new CustomEvent('dailyProgress', { detail: { current: state.dailyChallenge.pagesVisitedToday, target: dailyChallengeConfig.pagesToVisit } }));
+                    if (state.dailyChallenge.pagesVisitedToday >= dailyChallengeConfig.pagesToVisit) {
+                        eventTarget.dispatchEvent(new CustomEvent('dailyChallengeReady'));
+                    }
+                }
+            };
+
+            /**
+             * Completa o desafio diário, adiciona pontos bônus e marca como concluído.
+             */
+            const completeDailyChallenge = () => {
+                if (!state.dailyChallenge.completed && state.dailyChallenge.pagesVisitedToday >= dailyChallengeConfig.pagesToVisit) {
+                    state.dailyChallenge.completed = true;
+                    addPoints(dailyChallengeConfig.bonusPoints, 1); // Adiciona pontos bônus sem multiplicador extra
+                    saveState();
+                    eventTarget.dispatchEvent(new CustomEvent('dailyChallengeCompleted', { detail: { points: dailyChallengeConfig.bonusPoints } }));
+                    AnalyticsTracker.track('dailyChallengeCompleted', { points: dailyChallengeConfig.bonusPoints });
+                }
+            };
+
+            /**
+             * Reseta todo o progresso do jogo.
+             */
+            const resetGame = () => {
+                if (confirm('Tem certeza que deseja reiniciar todo o seu progresso? Isso não pode ser desfeito.')) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    AnalyticsTracker.reset(); // Reseta analytics também
+                    state = {
+                        points: 0,
+                        badges: [],
+                        milestones: {},
+                        dailyChallenge: { completed: false, pagesVisitedToday: 0 },
+                        multiplier: 1,
+                        lastDailyReset: new Date().toDateString()
+                    };
+                    saveState();
+                    eventTarget.dispatchEvent(new CustomEvent('gameReset'));
+                    alert('Jogo reiniciado com sucesso!');
+                    window.location.reload(); // Recarrega a página para refletir o reset
+                }
+            };
+
+            /**
+             * Retorna o próximo badge a ser desbloqueado.
+             * @returns {object|null} O próximo badge ou null se todos foram desbloqueados.
+             */
+            const getNextBadge = () => {
+                const sortedBadges = [...badgesConfig].sort((a, b) => a.threshold - b.threshold);
+                for (const badge of sortedBadges) {
+                    if (badge.threshold !== null && !state.badges.includes(badge.id)) {
+                        return badge;
+                    }
+                }
+                return null;
+            };
+
+            /**
+             * Retorna o próximo milestone a ser alcançado.
+             * @returns {object|null} O próximo milestone ou null se todos foram alcançados.
+             */
+            const getNextMilestone = () => {
+                const sortedMilestones = [...milestonesConfig].sort((a, b) => a.threshold - b.threshold);
+                for (const milestone of sortedMilestones) {
+                    if (!state.milestones[milestone.id]) {
+                        return milestone;
+                    }
+                }
+                return null;
+            };
+
+            // Inicializa ao carregar o módulo
+            loadState();
+            checkBadges(); // Garante que badges sejam verificados no carregamento
+
+            return {
+                init: loadState,
+                addPoints,
+                unlockBadge,
+                completeDailyChallenge,
+                incrementDailyPagesVisited,
+                resetGame,
+                getState: () => ({ ...state }), // Retorna uma cópia do estado
+                getBadgesConfig: () => [...badgesConfig],
+                getDailyChallengeConfig: () => ({ ...dailyChallengeConfig }),
+                getNextBadge,
+                getNextMilestone,
+                addEventListener: eventTarget.addEventListener.bind(eventTarget),
+                removeEventListener: eventTarget.removeEventListener.bind(eventTarget)
+            };
+        })();
+
+        // --- 3. CelebrationAnimation Module ---
+        // Gerencia a exibição de animações visuais de celebração.
+        const CelebrationAnimation = (() => {
+            const overlay = document.getElementById('celebration-overlay');
+            const messageEl = overlay.querySelector('.celebration-message');
+            const pointsEl = overlay.querySelector('.points-display');
+            const particlesContainer = overlay.querySelector('.particles-container');
+            const milestoneModal = document.getElementById('milestone-modal');
+            const milestoneModalTitle = document.getElementById('milestone-modal-title');
+            const milestoneModalDescription = document.getElementById('milestone-modal-description');
+            const milestoneModalPoints = document.getElementById('milestone-modal-points');
+            const closeMilestoneModalBtn = document.getElementById('close-milestone-modal');
+
+            let animationTimeout;
+            let currentParticles = [];
+            const animationDuration = 3000; // Duração total da animação em ms
+
+            // Sons de celebração (placeholders)
+            const sounds = {
+                points: new Audio('https://www.soundjay.com/buttons/sounds/button-3.mp3'), // Som de clique/ponto
+                badge: new Audio('https://www.soundjay.com/misc/sounds/magic-chime-01.mp3'), // Som de magia/chime
+                milestone: new Audio('https://www.soundjay.com/misc/sounds/success-fanfare-01.mp3'), // Som de fanfarra
+                default: new Audio('https://www.soundjay.com/misc/sounds/ding-dong-01.mp3') // Som padrão
+            };
+
+            /**
+             * Toca um som de celebração.
+             * @param {string} type - Tipo de celebração para escolher o som.
+             */
+            const playSound = (type) => {
+                if (document.getElementById('sound-toggle').checked) {
+                    const sound = sounds[type] || sounds.default;
+                    sound.currentTime = 0; // Reinicia o som se já estiver tocando
+                    sound.play().catch(e => console.warn("Erro ao tocar som:", e));
+                }
+            };
+
+            /**
+             * Aciona vibração no dispositivo (se suportado).
+             */
+            const vibrate = () => {
+                if (document.getElementById('vibration-toggle').checked && navigator.vibrate) {
+                    navigator.vibrate(200); // Vibra por 200ms
+                }
+            };
+
+            /**
+             * Cria e adiciona partículas de celebração ao DOM.
+             * @param {string} type - Tipo de partícula ('confetti', 'stars', 'emojis').
+             * @param {number} count - Número de partículas a criar.
+             */
+            const createParticles = (type, count) => {
+                const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+                const emojis = ['🎉', '✨', '🌟', '🥳', '🚀', '💖', '💯', '🤩', '💫'];
+                const particleCount = window.innerWidth < 768 ? Math.floor(count / 2) : count; // Menos partículas em mobile
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle', type);
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.top = `${Math.random() * 100}vh`;
+                    particle.style.animationDelay = `${Math.random() * 0.5}s`; // Pequeno delay para variação
+
+                    if (type === 'confetti') {
+                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        particle.style.width = `${Math.random() * 8 + 5}px`;
+                        particle.style.height = `${Math.random() * 8 + 5}px`;
+                        particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    } else if (type === 'star') {
+                        particle.textContent = '⭐';
+                        particle.style.fontSize = `${Math.random() * 15 + 10}px`;
+                    } else if (type === 'emoji') {
+                        particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                        particle.style.fontSize = `${Math.random() * 20 + 16}px`;
+                    }
+
+                    particlesContainer.appendChild(particle);
+                    currentParticles.push(particle);
+                }
+            };
+
+            /**
+             * Limpa todas as partículas do DOM.
+             */
+            const cleanupParticles = () => {
+                currentParticles.forEach(p => p.remove());
+                currentParticles = [];
+            };
+
+            /**
+             * Anima a contagem de pontos.
+             * @param {number} targetPoints - O valor final dos pontos.
+             */
+            const animatePoints = (targetPoints) => {
+                let startPoints = 0;
+                const duration = 1000; // Duração da animação do contador
+                let startTime = null;
+
+                const updateCount = (currentTime) => {
+                    if (!startTime) startTime = currentTime;
+                    const progress = (currentTime - startTime) / duration;
+
+                    if (progress < 1) {
+                        const current = Math.floor(startPoints + (targetPoints - startPoints) * progress);
+                        pointsEl.textContent = `+${current}`;
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        pointsEl.textContent = `+${targetPoints}`;
+                    }
+                };
+                requestAnimationFrame(updateCount);
+            };
+
+            /**
+             * Exibe a animação de celebração.
+             * @param {string} message - Mensagem de celebração.
+             * @param {number} points - Pontos ganhos.
+             * @param {string} type - Tipo de celebração ('points', 'badge', 'milestone', 'confetti', 'stars', 'emojis').
+             * @param {number} [duration=animationDuration] - Duração da exibição da celebração.
+             */
+            const show = (message, points, type, duration = animationDuration) => {
+                clearTimeout(animationTimeout); // Limpa qualquer animação anterior
+                cleanupParticles(); // Remove partículas antigas
+
+                messageEl.textContent = message;
+                pointsEl.textContent = `+${points}`;
+                overlay.classList.add('active');
+
+                // Cria partículas baseadas no tipo
+                let particleType = 'confetti';
+                let particleCount = 100;
+                if (type === 'badge') {
+                    particleType = 'star';
+                    particleCount = 70;
+                } else if (type === 'milestone') {
+                    particleType = 'emoji';
+                    particleCount = 80;
+                } else if (type === 'stars') {
+                    particleType = 'star';
+                    particleCount = 120;
+                } else if (type === 'emojis') {
+                    particleType = 'emoji';
+                    particleCount = 100;
+                } else if (type === 'confetti') {
+                    particleType = 'confetti';
+                    particleCount = 150;
+                }
+                createParticles(particleType, particleCount);
+
+                animatePoints(points);
+                playSound(type);
+                vibrate();
+
+                animationTimeout = setTimeout(hide, duration);
+            };
+
+            /**
+             * Esconde a animação de celebração.
+             */
+            const hide = () => {
+                overlay.classList.remove('active');
+                cleanupParticles();
+            };
+
+            /**
+             * Exibe o modal de milestone.
+             * @param {string} title - Título do modal.
+             * @param {string} description - Descrição do milestone.
+             * @param {number} points - Pontos do milestone.
+             */
+            const showMilestoneModal = (title, description, points) => {
+                milestoneModalTitle.textContent = title;
+                milestoneModalDescription.textContent = description;
+                milestoneModalPoints.textContent = `${points} Pontos!`;
+                milestoneModal.classList.add('active');
+                // Adiciona um listener temporário para fechar o modal
+                closeMilestoneModalBtn.onclick = hideMilestoneModal;
+            };
+
+            /**
+             * Esconde o modal de milestone.
+             */
+            const hideMilestoneModal = () => {
+                milestoneModal.classList.remove('active');
+                closeMilestoneModalBtn.onclick = null; // Remove o listener
+            };
+
+            return {
+                show,
+                showMilestoneModal,
+                hideMilestoneModal
+            };
+        })();
+
+        // --- 4. CelebrationDispatcher Module ---
+        // Mapeia eventos de gamificação para tipos de celebração e coordena a CelebrationAnimation.
+        const CelebrationDispatcher = (() => {
+            /**
+             * Inicializa o dispatcher, subscrevendo aos eventos do GamificationManager.
+             */
+            const init = () => {
+                GamificationManager.addEventListener('pointsEarned', handlePointsEarned);
+                GamificationManager.addEventListener('badgeUnlocked', handleBadgeUnlocked);
+                GamificationManager.addEventListener('milestoneAchieved', handleMilestoneAchieved);
+                GamificationManager.addEventListener('dailyChallengeCompleted', handleDailyChallengeCompleted);
+                GamificationManager.addEventListener('gameReset', handleGameReset);
+            };
+
+            /**
+             * Manipula o evento de pontos ganhos.
+             * @param {CustomEvent} event - Evento 'pointsEarned'.
+             */
+            const handlePointsEarned = (event) => {
+                const { points } = event.detail;
+                if (points > 0) {
+                    CelebrationAnimation.show('✨ Pontos Ganhos!', points, 'points');
+                }
+            };
+
+            /**
+             * Manipula o evento de badge desbloqueado.
+             * @param {CustomEvent} event - Evento 'badgeUnlocked'.
+             */
+            const handleBadgeUnlocked = (event) => {
+                const { badgeName, celebrationType } = event.detail;
+                CelebrationAnimation.show(`🎖️ Badge: ${badgeName}!`, 0, celebrationType || 'badge'); // Badges não mostram pontos no overlay
+            };
+
+            /**
+             * Manipula o evento de milestone alcançado.
+             * @param {CustomEvent} event - Evento 'milestoneAchieved'.
+             */
+            const handleMilestoneAchieved = (event) => {
+                const { message, points, celebrationType } = event.detail;
+                // Primeiro mostra a celebração visual, depois o modal
+                CelebrationAnimation.show('🏆 Milestone Alcançado!', points, celebrationType || 'milestone', 2000);
+                setTimeout(() => {
+                    CelebrationAnimation.showMilestoneModal('🎉 Milestone Alcançado!', message, points);
+                }, 2000); // Mostra o modal após a celebração principal
+            };
+
+            /**
+             * Manipula o evento de desafio diário completado.
+             * @param {CustomEvent} event - Evento 'dailyChallengeCompleted'.
+             */
+            const handleDailyChallengeCompleted = (event) => {
+                const { points } = event.detail;
+                CelebrationAnimation.show('✅ Desafio Diário Completo!', points, 'stars');
+            };
+
+            /**
+             * Manipula o evento de reset do jogo.
+             */
+            const handleGameReset = () => {
+                CelebrationAnimation.show('🔄 Jogo Reiniciado!', 0, 'confetti', 1500);
+            };
+
+            return {
+                init
+            };
+        })();
+
+        // --- 5. UIManager Module ---
+        // Gerencia todas as atualizações da interface do usuário e interações com o DOM.
+        const UIManager = (() => {
+            // Elementos do DOM
+            const currentPointsEl = document.getElementById('current-points');
+            const currentMultiplierEl = document.getElementById('current-multiplier');
+            const nextBadgeInfoEl = document.getElementById('next-badge-info');
+            const nextMilestoneInfoEl = document.getElementById('next-milestone-info');
+            const overallProgressBar = document.getElementById('overall-progress-bar');
+            const unlockedBadgesList = document.getElementById('unlocked-badges-list');
+            const dailyChallengeText = document.getElementById('daily-challenge-text');
+            const completeDailyChallengeBtn = document.getElementById('complete-daily-challenge-btn');
+            const nextPageBtn = document.getElementById('next-page-btn');
+            const completeQuizBtn = document.getElementById('complete-quiz-btn');
+            const resetGameBtn = document.getElementById('reset-game-btn');
+            const showAnalyticsBtn = document.getElementById('show-analytics-btn');
+            const analyticsDashboard = document.getElementById('analytics-dashboard');
+            const closeAnalyticsBtn = document.getElementById('close-analytics-btn');
+            const analyticsTotalPoints = document.getElementById('analytics-total-points');
+            const analyticsBadgesUnlocked = document.getElementById('analytics-badges-unlocked');
+            const analyticsMilestonesAchieved = document.getElementById('analytics-milestones-achieved');
+            const analyticsSessionTime = document.getElementById('analytics-session-time');
+            const analyticsMostCelebrated = document.getElementById('analytics-most-celebrated');
+            const exportAnalyticsBtn = document.getElementById('export-analytics-btn');
+            const pageTitleEl = document.getElementById('page-title');
+            const pageTextEl = document.getElementById('page-text');
+
+            // Conteúdo das páginas
+            const pages = [
+                {
+                    title: "Página Inicial: Introdução",
+                    text: "Bem-vindo ao nosso projeto educacional sobre vícios digitais e os novos padrões comportamentais da sociedade. Aqui, exploraremos como empresas utilizam mecanismos psicológicos sofisticados para manter os usuários engajados, muitas vezes sem que percebam. Navegue pelas seções para entender o sistema dopaminérgico, os mecanismos psicológicos e as ferramentas de estimulação que moldam nossa interação com a tecnologia. Ao explorar o site, você ganhará pontos e desbloqueará badges, demonstrando como a gamificação funciona na prática.",
+                    points: 10,
+                    nextBtnText: "Explorar Sistema Dopaminérgico (Ganhe Pontos!)"
+                },
+                {
+                    title: "Sistema Dopaminérgico",
+                    text: "O sistema dopaminérgico é uma rede de neurônios no cérebro que utiliza a dopamina como neurotransmissor. A dopamina é frequentemente associada ao prazer, mas seu papel principal é na motivação, recompensa e aprendizado. Quando realizamos uma ação que o cérebro considera benéfica (como comer, socializar ou, no contexto digital, receber uma notificação), a dopamina é liberada, reforçando esse comportamento. Empresas de tecnologia exploram esse sistema criando ciclos de recompensa imprevisíveis, que mantêm o usuário em busca da próxima 'dose' de dopamina.",
+                    points: 20,
+                    nextBtnText: "Descobrir Mecanismos Psicológicos (Ganhe Pontos!)"
+                },
+                {
+                    title: "Mecanismos Psicológicos",
+                    text: "Empresas utilizam diversos mecanismos psicológicos para manter o engajamento. O 'Fear Of Missing Out' (FOMO) nos impulsiona a verificar constantemente as redes sociais. Recompensas variáveis e imprevisíveis (como o número de likes ou a próxima postagem interessante) ativam o sistema dopaminérgico de forma poderosa, criando um ciclo de busca. A prova social nos leva a seguir o comportamento da maioria, e a reciprocidade nos faz sentir a necessidade de retribuir. Esses mecanismos são projetados para criar hábitos e dependência.",
+                    points: 25,
+                    nextBtnText: "Ver Ferramentas de Estimulação (Ganhe Pontos!)"
+                },
+                {
+                    title: "Ferramentas de Estimulação",
+                    text: "As plataformas digitais são repletas de ferramentas que estimulam o engajamento. Notificações push, o 'infinite scroll' (rolagem infinita) que elimina pontos de parada, e os 'dark patterns' (interfaces que induzem a ações não intencionais) são exemplos. A personalização de conteúdo e algoritmos que nos mostram exatamente o que queremos ver criam bolhas de informação que nos mantêm presos, enquanto a facilidade de acesso e a onipresença dos dispositivos tornam a fuga desses estímulos cada vez mais difícil.",
+                    points: 30,
+                    nextBtnText: "Entender a Gamificação (Ganhe Pontos!)"
+                },
+                {
+                    title: "Gamificação",
+                    text: "A gamificação é a aplicação de elementos e técnicas de design de jogos em contextos não-jogáveis. Pontos, badges, rankings, barras de progresso e desafios são usados para motivar e engajar usuários. No contexto digital, isso se traduz em 'streaks' (sequências de uso diário), níveis de perfil, e recompensas virtuais que nos incentivam a passar mais tempo na plataforma. Embora possa ser usada para fins positivos, a gamificação também é uma ferramenta poderosa para criar e manter o vício digital.",
+                    points: 35,
+                    nextBtnText: "Refletir sobre Conscientização (Ganhe Pontos!)"
+                },
+                {
+                    title: "Conscientização",
+                    text: "Muitas vezes, somos influenciados por esses mecanismos sem perceber. A conscientização é o primeiro passo para retomar o controle. Entender como nosso cérebro reage à dopamina e como as empresas exploram isso nos permite fazer escolhas mais informadas sobre nosso uso da tecnologia. Promover a reflexão sobre o tempo de tela, a qualidade das interações e o impacto na saúde mental é crucial para desenvolver um relacionamento mais saudável com o mundo digital.",
+                    points: 40,
+                    nextBtnText: "Completar Quiz e Concluir (Ganhe Pontos e Badge!)"
+                },
+                {
+                    title: "Conclusão",
+                    text: "Chegamos ao fim da nossa jornada. Vimos como o sistema dopaminérgico é fundamental para o vício, como mecanismos psicológicos e ferramentas sofisticadas são empregados para nos manter engajados, e como a gamificação amplifica esses efeitos. A chave é a conscientização. Ao entender esses processos, podemos desenvolver estratégias para um uso mais equilibrado e intencional da tecnologia, protegendo nossa saúde mental e bem-estar. Obrigado por explorar este tema conosco!",
+                    points: 50,
+                    nextBtnText: "Voltar ao Início" // Última página, volta ao início
+                }
+            ];
+            let currentPageIndex = 0;
+
+            /**
+             * Atualiza a interface do usuário com o estado atual do jogo.
+             */
+            const updateUI = () => {
+                const state = GamificationManager.getState();
+                const badgesConfig = GamificationManager.getBadgesConfig();
+                const nextBadge = GamificationManager.getNextBadge();
+                const nextMilestone = GamificationManager.getNextMilestone();
+                const dailyChallenge = state.dailyChallenge;
+                const dailyChallengeCfg = GamificationManager.getDailyChallengeConfig();
+
+                currentPointsEl.textContent = state.points;
+                currentMultiplierEl.textContent = `x${state.multiplier}`;
+
+                // Badges
+                unlockedBadgesList.innerHTML = '';
+                badgesConfig.forEach(badge => {
+                    const li = document.createElement('li');
+                    li.classList.add('badge-item');
+                    if (state.badges.includes(badge.id)) {
+                        li.classList.add('unlocked');
+                        li.innerHTML = `<span class="icon">${badge.icon}</span> ${badge.name}`;
+                    } else {
+                        li.innerHTML = `<span class="icon">🔒</span> ${badge.name}`;
+                    }
+                    unlockedBadgesList.appendChild(li);
+                });
+
+                // Próximo Badge
+                if (nextBadge) {
+                    nextBadgeInfoEl.textContent = `${nextBadge.name} (${nextBadge.threshold} pontos)`;
+                } else {
+                    nextBadgeInfoEl.textContent = 'Todos desbloqueados!';
+                }
+
+                // Próximo Milestone
+                if (nextMilestone) {
+                    nextMilestoneInfoEl.textContent = `${nextMilestone.threshold} pontos`;
+                } else {
+                    nextMilestoneInfoEl.textContent = 'Todos alcançados!';
+                }
+
+                // Barra de Progresso Geral (baseado em pontos para simplificar)
+                const maxPointsForProgress = 1000; // Exemplo de máximo para a barra
+                const progressPercentage = Math.min((state.points / maxPointsForProgress) * 100, 100);
+                overallProgressBar.style.width = `${progressPercentage}%`;
+                overallProgressBar.setAttribute('aria-valuenow', progressPercentage.toFixed(0));
+
+                // Desafio Diário
+                if (dailyChallenge.completed) {
+                    dailyChallengeText.textContent = '✅ Desafio Diário Completo! Volte amanhã para um novo desafio.';
+                    completeDailyChallengeBtn.disabled = true;
+                    completeDailyChallengeBtn.textContent = 'Desafio Completo';
+                } else {
+                    dailyChallengeText.textContent = `Visite ${dailyChallengeCfg.pagesToVisit - dailyChallenge.pagesVisitedToday} páginas para ganhar ${dailyChallengeCfg.bonusPoints} pontos bônus!`;
+                    completeDailyChallengeBtn.disabled = (dailyChallenge.pagesVisitedToday < dailyChallengeCfg.pagesToVisit);
+                    completeDailyChallengeBtn.textContent = 'Completar Desafio Diário';
+                }
+
+                // Botão de Quiz (aparece na página de Conscientização)
+                if (currentPageIndex === pages.length - 2) { // Página de Conscientização
+                    completeQuizBtn.style.display = 'block';
+                    nextPageBtn.style.display = 'none';
+                } else if (currentPageIndex === pages.length - 1) { // Página de Conclusão
+                    completeQuizBtn.style.display = 'none';
+                    nextPageBtn.style.display = 'block';
+                    nextPageBtn.textContent = pages[currentPageIndex].nextBtnText;
+                } else {
+                    completeQuizBtn.style.display = 'none';
+                    nextPageBtn.style.display = 'block';
+                    nextPageBtn.textContent = pages[currentPageIndex].nextBtnText;
+                }
+            };
+
+            /**
+             * Carrega o conteúdo da página atual.
+             */
+            const loadPageContent = () => {
+                const page = pages[currentPageIndex];
+                pageTitleEl.textContent = page.title;
+                pageTextEl.textContent = page.text;
+                nextPageBtn.textContent = page.nextBtnText;
+                updateUI(); // Atualiza UI após carregar a página
+            };
+
+            /**
+             * Navega para a próxima página, adicionando pontos e registrando visita.
+             */
+            const navigateNextPage = () => {
+                if (currentPageIndex < pages.length - 1) {
+                    currentPageIndex++;
+                    GamificationManager.addPoints(pages[currentPageIndex - 1].points); // Adiciona pontos da página ANTERIOR
+                    GamificationManager.incrementDailyPagesVisited();
+                } else {
+                    // Última página, volta para a primeira
+                    currentPageIndex = 0;
+                }
+                loadPageContent();
+                AnalyticsTracker.track('pageVisited', { pageIndex: currentPageIndex, pageTitle: pages[currentPageIndex].title });
+            };
+
+            /**
+             * Simula a conclusão de um quiz.
+             */
+            const completeQuiz = () => {
+                const quizPoints = 100;
+                GamificationManager.addPoints(quizPoints);
+                GamificationManager.unlockBadge('quiz_master');
+                AnalyticsTracker.track('quizCompleted', { points: quizPoints });
+                alert('Parabéns! Você completou o quiz e ganhou 100 pontos e o badge Mestre do Quiz!');
+                // Após o quiz, avança para a página de conclusão
+                currentPageIndex++;
+                loadPageContent();
+            };
+
+            /**
+             * Atualiza o dashboard de analytics.
+             */
+            const updateAnalyticsDashboard = () => {
+                const metrics = AnalyticsTracker.getMetrics();
+                analyticsTotalPoints.textContent = metrics.totalPoints;
+                analyticsBadgesUnlocked.textContent = `${metrics.badgesUnlocked} / ${GamificationManager.getBadgesConfig().length}`;
+                analyticsMilestonesAchieved.textContent = `${metrics.milestonesAchieved} / ${GamificationManager.milestonesConfig.length}`;
+                analyticsSessionTime.textContent = `${metrics.sessionDuration}s`;
+
+                analyticsMostCelebrated.innerHTML = '';
+                if (metrics.mostCelebrated.length > 0) {
+                    metrics.mostCelebrated.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        analyticsMostCelebrated.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = 'Nenhum evento registrado ainda.';
+                    analyticsMostCelebrated.appendChild(li);
+                }
+            };
+
+            /**
+             * Alterna a visibilidade do dashboard de analytics.
+             */
+            const toggleAnalyticsDashboard = () => {
+                analyticsDashboard.classList.toggle('active');
+                if (analyticsDashboard.classList.contains('active')) {
+                    updateAnalyticsDashboard(); // Atualiza ao abrir
+                }
+            };
+
+            /**
+             * Exporta os dados de analytics como um arquivo JSON.
+             */
+            const exportAnalyticsData = () => {
+                const dataStr = AnalyticsTracker.exportData();
+                const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+                const exportFileDefaultName = 'gamification_analytics.json';
+
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                AnalyticsTracker.track('analyticsExported');
+                alert('Dados de analytics exportados com sucesso!');
+            };
+
+            /**
+             * Inicializa todos os listeners de eventos da UI.
+             */
+            const setupEventListeners = () => {
+                nextPageBtn.addEventListener('click', navigateNextPage);
+                completeQuizBtn.addEventListener('click', completeQuiz);
+                completeDailyChallengeBtn.addEventListener('click', GamificationManager.completeDailyChallenge);
+                resetGameBtn.addEventListener('click', GamificationManager.resetGame);
+                showAnalyticsBtn.addEventListener('click', toggleAnalyticsDashboard);
+                closeAnalyticsBtn.addEventListener('click', toggleAnalyticsDashboard);
+                exportAnalyticsBtn.addEventListener('click', exportAnalyticsData);
+
+                // Listeners para eventos do GamificationManager para atualizar a UI
+                GamificationManager.addEventListener('pointsEarned', updateUI);
+                GamificationManager.addEventListener('badgeUnlocked', updateUI);
+                GamificationManager.addEventListener('milestoneAchieved', updateUI);
+                GamificationManager.addEventListener('dailyProgress', updateUI);
+                GamificationManager.addEventListener('dailyChallengeReady', updateUI);
+                GamificationManager.addEventListener('dailyChallengeCompleted', updateUI);
+                GamificationManager.addEventListener('gameReset', updateUI);
+            };
+
+            /**
+             * Inicializa o UIManager.
+             */
+            const init = () => {
+                loadPageContent();
+                setupEventListeners();
+                updateUI(); // Garante que a UI esteja atualizada no carregamento
+            };
+
+            return {
+                init
+            };
+        })();
+
+        // ====================================================================================================
+        // INICIALIZAÇÃO GERAL
+        // ====================================================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            GamificationManager.init(); // Carrega o estado do jogo
+            CelebrationDispatcher.init(); // Configura o dispatcher de celebrações
+            UIManager.init(); // Inicializa a interface do usuário
+        });
+    </script>
+</body>
+</html>
