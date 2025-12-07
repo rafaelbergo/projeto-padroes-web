@@ -8,7 +8,7 @@
     <title>Vícios Digitais e Engajamento: Uma Análise Psicológica</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/sidebar.css">
-    <script src="../js/app.js"></script>
+    <link rel="stylesheet" href="../css/celebration.css">
 </head>
 
 <body>
@@ -66,65 +66,17 @@
             <p>Obrigado por explorar este conteúdo. Sua curiosidade e desejo de entender são o primeiro passo para uma
                 relação mais saudável com a tecnologia.</p>
         </section>
-
-        <aside class="sidebar">
-            <h3>Seu Progresso</h3>
-            <div class="gamification-stats">
-                <p>Pontos: <strong id="current-points">0</strong></p>
-                <p>Multiplicador: <strong id="current-multiplier">x1</strong></p>
-                <p>Próximo Badge: <strong id="next-badge-info">Nenhum</strong></p>
-                <p>Próximo Milestone: <strong id="next-milestone-info">Nenhum</strong></p>
-            </div>
-
-            <h4>Progresso Geral</h4>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="overall-progress-bar" role="progressbar" aria-valuenow="0"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-
-            <h4>Badges Desbloqueados</h4>
-            <ul class="badges-list" id="unlocked-badges-list">
-                <li class="badge-item"><span class="icon">🔒</span> Visitante</li>
-                <li class="badge-item"><span class="icon">🔒</span> Explorador</li>
-                <li class="badge-item"><span class="icon">🔒</span> Mestre</li>
-                <li class="badge-item"><span class="icon">🔒</span> Especialista</li>
-                <li class="badge-item"><span class="icon">🔒</span> Guru</li>
-                <li class="badge-item"><span class="icon">🔒</span> Defensor</li>
-                <li class="badge-item"><span class="icon">🔒</span> Mestre do Quiz</li>
-            </ul>
-
-            <div class="daily-challenge">
-                <h4>Desafio Diário</h4>
-                <p id="daily-challenge-text">Visite 3 páginas para ganhar 50 pontos bônus!</p>
-                <button id="complete-daily-challenge-btn" disabled>Completar Desafio Diário</button>
-            </div>
-
-            <div class="controls">
-                <h4>Configurações & Ferramentas</h4>
-                <div class="toggle-switch">
-                    <label for="sound-toggle">Som de Celebração</label>
-                    <label class="switch">
-                        <input type="checkbox" id="sound-toggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-switch">
-                    <label for="vibration-toggle">Vibração (Celular)</label>
-                    <label class="switch">
-                        <input type="checkbox" id="vibration-toggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <button id="show-analytics-btn">Ver Dashboard de Analytics</button>
-                <button id="reset-game-btn" style="background-color: #dc3545;">Reiniciar Jogo</button>
-            </div>
-        </aside>
     </main>
     <footer>
         <div class="container">
             <p>&copy; Vícios Digitais e Engajamento Psicológico. Todos os direitos reservados.</p>
         </div>
     </footer>
+    <script src="../js/gamification-manager.js"></script>
+    <script src="../js/celebration-animation.js"></script>
+    <script src="../js/analytics-tracker.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/app.js"></script>
 </body>
 
 </html>
