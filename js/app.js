@@ -104,6 +104,23 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAllUI();
     });
 
+    const scrollArea = document.getElementById('infinite-scroll-demo');
+    let itemCount = 5;
+
+    scrollArea.addEventListener('scroll', function () {
+        // Checa se está perto do final (20px do fundo)
+        if (scrollArea.scrollTop + scrollArea.clientHeight >= scrollArea.scrollHeight - 20) {
+            // Adiciona mais 3 itens
+            for (let i = 0; i < 3; i++) {
+                itemCount++;
+                const newItem = document.createElement('div');
+                newItem.className = 'infinite-scroll-item';
+                newItem.textContent = `Conteúdo ${itemCount}`;
+                scrollArea.appendChild(newItem);
+            }
+        }
+    });
+
     document.addEventListener('click', (e) => {
         if (e.target.id === 'complete-action-btn' && gamificationManager) {
             gamificationManager.addPoints(25, 'action_complete');
