@@ -364,7 +364,7 @@ main {
 }
 
 .infinite-scroll-area {
-    height: 150px;
+    height: 750px;
     overflow-y: scroll;
     border: 1px solid #ddd;
     background-color: var(--card-background);

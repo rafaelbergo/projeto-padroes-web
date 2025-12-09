@@ -109,20 +109,61 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAllUI();
     });
 
+    // Infinte scroll videos
     const scrollArea = document.getElementById('infinite-scroll-demo');
-    let itemCount = 5;
+    if (!scrollArea) return;
+
+    let page = 1;
+    let loading = false;
+    let videoIndex = 0;
+    let videos = [];
+
+    const PEXELS_API_KEY = 'v0G6YJko3qag5Fqu3fVd3qIIf74cMXhX7UETcKlqZNye29zsJZdiQZ0y';
+    const PEXELS_API_URL = 'https://api.pexels.com/videos/search?query=ai&per_page=5&page=';
+
+    async function fetchVideos() {
+        loading = true;
+        const response = await fetch(PEXELS_API_URL + page, {
+            headers: {
+                Authorization: PEXELS_API_KEY
+            }
+        });
+        const data = await response.json();
+        videos = videos.concat(data.videos);
+        page++;
+        loading = false;
+        appendVideos(3); // Adiciona 3 vídeos por vez
+    }
+
+    function appendVideos(count) {
+        for (let i = 0; i < count; i++) {
+            if (videoIndex >= videos.length) {
+                fetchVideos();
+                return;
+            }
+            const video = videos[videoIndex];
+            const videoUrl = video.video_files.find(f => f.quality === 'sd' && f.width <= 640)?.link || video.video_files[0].link;
+            const newItem = document.createElement('div');
+            newItem.className = 'infinite-scroll-item';
+            newItem.innerHTML = `
+                <video width="100%" height="500" controls poster="${video.image}">
+                    <source src="${videoUrl}" type="video/mp4">
+                    Seu navegador não suporta vídeo.
+                </video>
+                <div style="font-size:0.9em;color:#555;">${video.user.name}</div>
+            `;
+            scrollArea.appendChild(newItem);
+            videoIndex++;
+        }
+    }
+
+    // Inicializa com alguns vídeos
+    fetchVideos();
 
     scrollArea.addEventListener('scroll', function () {
-        // Checa se está perto do final (20px do fundo)
+        if (loading) return;
         if (scrollArea.scrollTop + scrollArea.clientHeight >= scrollArea.scrollHeight - 20) {
-            // Adiciona mais 3 itens
-            for (let i = 0; i < 3; i++) {
-                itemCount++;
-                const newItem = document.createElement('div');
-                newItem.className = 'infinite-scroll-item';
-                newItem.textContent = `Conteúdo ${itemCount}`;
-                scrollArea.appendChild(newItem);
-            }
+            appendVideos(2);
         }
     });
 
