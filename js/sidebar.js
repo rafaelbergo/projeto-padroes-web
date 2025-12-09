@@ -245,11 +245,18 @@ class SidebarManager {
 
         // Buttons
         const dashboardBtn = document.getElementById('show-analytics-btn');
-        if (dashboardBtn) dashboardBtn.addEventListener('click', () => this.showDashboard());
+        if (dashboardBtn) {
+            dashboardBtn.replaceWith(dashboardBtn.cloneNode(true)); // Remove listeners antigos
+            const newDashboardBtn = document.getElementById('show-analytics-btn');
+            newDashboardBtn.addEventListener('click', () => this.showDashboard());
+        }
+            
 
         const resetBtn = document.getElementById('reset-game-btn');
         if (resetBtn) {
-            resetBtn.addEventListener('click', () => {
+            resetBtn.replaceWith(resetBtn.cloneNode(true)); // Remove listeners antigos
+            const newResetBtn = document.getElementById('reset-game-btn');
+            newResetBtn.addEventListener('click', () => {
                 if (confirm('Reiniciar todo progresso?')) {
                     this.gamification.resetAll();
                     this.updateUI();
@@ -508,14 +515,36 @@ class SidebarManager {
             nextMilestoneEl.textContent = nextMilestone ? nextMilestone.message : 'Todos atingidos!';
         }
     }
-
+/*
     showDashboard() {
         const state = this.gamification.getState();
         const metrics = this.analytics.getMetrics();
         const dashboardInfo = `📊 DASHBOARD\nPontos: ${state.points}\nBadges: ${state.badges.length}/7\nPáginas: ${state.pagesVisited.length}\nMultiplicador: x${state.multiplier}\nDesafio: ${state.dailyChallenge.completed ? 'Completado' : `${state.dailyChallenge.pagesVisitedToday}/3`}\n\n📈 ANALYTICS\nSessões: ${metrics.totalSessions || 0}\nTempo: ${metrics.sessionDuration || 0}s\nEventos: ${metrics.totalEvents || 0}`;
         alert(dashboardInfo);
         console.table({ ...state, ...metrics });
-    }
+    }*/
+
+    showDashboard() {
+        const dashboardModal = document.getElementById('analytics-dashboard-modal');
+        const dashboardContent = document.getElementById('analytics-dashboard-content');
+        if (dashboardModal && dashboardContent) {
+            dashboardContent.innerHTML = `
+                <button id="close-analytics-dashboard" style="position:absolute; top:10px; right:10px;">Fechar</button>
+                ${this.analytics.createDashboardHTML()}
+            `;
+            dashboardModal.style.display = 'flex';
+
+            // Fechar ao clicar no botão
+            document.getElementById('close-analytics-dashboard').onclick = () => {
+                dashboardModal.style.display = 'none';
+            };
+        } else {
+            // Fallback para alert se container não existir
+            const metrics = this.analytics.getMetrics();
+            alert(JSON.stringify(metrics, null, 2));
+        }
+    }    
+
 }
 
 // Inicialização

@@ -9,11 +9,26 @@ class AnalyticsTracker {
         this.events = [];
         this.sessionStartTime = Date.now();
         this.sessionId = this._generateSessionId();
+        this.totalTimeKey = 'totalAppTime';
 
         // Carrega eventos salvos
         this.loadEvents();
+
+        // Salva tempo total ao sair da página
+        window.addEventListener('beforeunload', () => this.saveSessionTime());
     }
 
+    saveSessionTime() {
+        const sessionDuration = Math.floor((Date.now() - this.sessionStartTime) / 1000); // segundos
+        const prevTotal = parseInt(localStorage.getItem(this.totalTimeKey) || '0', 10);
+        localStorage.setItem(this.totalTimeKey, prevTotal + sessionDuration);
+    }
+
+    saveSessionTime() {
+        const sessionDuration = Math.floor((Date.now() - this.sessionStartTime) / 1000); // segundos
+        const prevTotal = parseInt(localStorage.getItem(this.totalTimeKey) || '0', 10);
+        localStorage.setItem(this.totalTimeKey, prevTotal + sessionDuration);
+    }
     /**
      * Gera ID único de sessão
      */
@@ -106,6 +121,8 @@ class AnalyticsTracker {
             .sort((a, b) => b[1] - a[1])
             .slice(0, 3)
             .map(([name, count]) => ({ name, count }));
+        
+        const totalAppTime = parseInt(localStorage.getItem(this.totalTimeKey) || '0', 10);
 
         return {
             sessionDuration: sessionDuration,
@@ -114,9 +131,10 @@ class AnalyticsTracker {
             badgesUnlocked: badgeEvents.length,
             milestonesAchieved: milestoneEvents.length,
             pagesVisited: pageVisitEvents.length,
-            pointsEarnedEvents: pointsEvents.length, // Renomeado para evitar confusão com totalPoints
+            pointsEarnedEvents: pointsEvents.length,
             mostCelebrated: mostCelebrated,
-            averagePointsPerEvent: pointsEvents.length > 0 ? Math.round(totalPoints / pointsEvents.length) : 0
+            averagePointsPerEvent: pointsEvents.length > 0 ? Math.round(totalPoints / pointsEvents.length) : 0,
+            totalAppTime
         };
     }
 
@@ -257,52 +275,42 @@ class AnalyticsTracker {
      */
     createDashboardHTML() {
         const metrics = this.getMetrics();
-        const timeline = this.getTimeline(5); // Apenas os 5 últimos eventos para o dashboard
+        const timeline = this.getTimeline(5);
 
-        const html = `
-            <div class="analytics-dashboard">
-                <h2>📊 Dashboard de Analytics</h2>
-                
-                <div class="dashboard-grid">
-                    <div class="metric-card">
-                        <span class="metric-value">${metrics.sessionDuration}s</span>
-                        <span class="metric-label">Duração da Sessão</span>
-                    </div>
-                    <div class="metric-card">
-                        <span class="metric-value">${metrics.totalPoints}</span>
-                        <span class="metric-label">Pontos Ganhos</span>
-                    </div>
-                    <div class="metric-card">
-                        <span class="metric-value">${metrics.badgesUnlocked}</span>
-                        <span class="metric-label">Badges Desbloqueados</span>
-                    </div>
-                    <div class="metric-card">
-                        <span class="metric-value">${metrics.milestonesAchieved}</span>
-                        <span class="metric-label">Milestones Alcançados</span>
-                    </div>
+        return `
+            <h2>📊 Dashboard de Analytics</h2>
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <span class="metric-value">${metrics.sessionDuration || 0}s</span>
+                    <span class="metric-label">Duração da Sessão</span>
                 </div>
-
-                <div class="timeline-section">
-                    <h3>⏱️ Últimos Eventos</h3>
-                    <ul class="timeline">
-                        ${timeline.map(e => `
-                            <li>
-                                <strong>${e.name}</strong> - ${e.timestamp}
-                                ${e.metadata && Object.keys(e.metadata).length > 0 ? `(${JSON.stringify(e.metadata)})` : ''}
-                            </li>
-                        `).join('')}
-                    </ul>
+                <div class="metric-card">
+                    <span class="metric-value">${metrics.totalAppTime !== undefined ? metrics.totalAppTime : 0}s</span>
+                    <span class="metric-label">Tempo Total no App</span>
                 </div>
-
-                <div class="export-section">
-                    <button id="export-json-btn">📥 Exportar JSON</button>
-                    <button id="export-csv-btn">📥 Exportar CSV</button>
-                    <button id="clear-analytics-btn">🗑️ Limpar Analytics</button>
+                <div class="metric-card">
+                    <span class="metric-value">${metrics.totalPoints || 0}</span>
+                    <span class="metric-label">Pontos Ganhos</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">${metrics.badgesUnlocked || 0}</span>
+                    <span class="metric-label">Badges Desbloqueados</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">${metrics.milestonesAchieved || 0}</span>
+                    <span class="metric-label">Milestones Alcançados</span>
                 </div>
             </div>
+            <h3>⏱️ Últimos Eventos</h3>
+            <ul class="timeline-list">
+                ${timeline.map(e => `
+                    <li>
+                        <strong>${e.name}</strong> - ${e.timestamp}
+                        <pre style="display:inline;">${JSON.stringify(e.metadata)}</pre>
+                    </li>
+                `).join('')}
+            </ul>
         `;
-
-        return html;
     }
 }
 

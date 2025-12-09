@@ -190,6 +190,12 @@ main {
     transform: translateY(0);
 }
 
+.page-content ul {
+    margin-left: 0;
+    padding-left: 0; 
+    list-style-position: inside;
+}
+
 .hero {
     text-align: center;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
