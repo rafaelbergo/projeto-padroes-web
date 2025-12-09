@@ -66,7 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     gamificationManager.init(); // Carrega, migra e reseta diário
-    
+
+    const currentPageId = detectPageId();
+    if (gamificationManager && currentPageId) {
+        gamificationManager.visitPage(currentPageId);
+        updateGamification(currentPageId);
+    }
     const eventTarget = gamificationManager.eventTarget;
 
     // Evento: Pontos ganhos
@@ -131,15 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🎮 App inicializado: Gamificação + Celebrações integradas!');
     console.log('✅ gamificationManager disponível:', gamificationManager);
     console.log('✅ celebration global disponível:', celebration);
-
-
-    updateAllUI();
-
-    // Detecta a página atual para pontuar
-    const currentPageId = detectPageId();
-    updateGamification(currentPageId);
-
     
+    updateAllUI();
 });
 
 

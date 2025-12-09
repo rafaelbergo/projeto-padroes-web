@@ -137,22 +137,37 @@ class GamificationManager {
     /**
      * Carrega estado do localStorage
      */
-    loadState() {
-        try {
-            const saved = localStorage.getItem('gamification-state');
-            if (saved) {
-                const parsedState = JSON.parse(saved);
-                // Mescla com estado atual (evita sobrescrita de campos novos)
-                this.state = { ...this.state, ...parsedState };
-                console.log('Estado carregado:', this.state.points, 'pontos');
-            } else {
-                this.saveState();
+   loadState() {
+    try {
+        const saved = localStorage.getItem('gamification-state');
+        if (saved) {
+            const parsedState = JSON.parse(saved);
+
+            // Mescla com estado atual (evita sobrescrita de campos novos)
+            this.state = { ...this.state, ...parsedState };
+
+            // Garante que arrays e objetos essenciais estejam inicializados
+            if (!Array.isArray(this.state.badges)) this.state.badges = [];
+            if (!Array.isArray(this.state.milestones)) this.state.milestones = [];
+            if (!Array.isArray(this.state.pagesVisited)) this.state.pagesVisited = [];
+            if (typeof this.state.dailyChallenge !== 'object' || this.state.dailyChallenge === null) {
+                this.state.dailyChallenge = {
+                    pagesVisitedToday: 0,
+                    requiredPages: 3,
+                    completed: false,
+                    lastReset: new Date().toDateString()
+                };
             }
-        } catch (error) {
-            console.error('Erro ao carregar estado:', error);
-            this.saveState(); // Recria
+
+            console.log('Estado carregado:', this.state.points, 'pontos');
+        } else {
+            this.saveState();
         }
+    } catch (error) {
+        console.error('Erro ao carregar estado:', error);
+        this.saveState(); // Recria estado válido
     }
+}
 
     /**
      * Salva estado no localStorage e sincroniza com userProgress (compatibilidade)
