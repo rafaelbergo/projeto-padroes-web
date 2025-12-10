@@ -364,7 +364,7 @@ main {
 }
 
 .infinite-scroll-area {
-    height: 150px;
+    height: 750px;
     overflow-y: scroll;
     border: 1px solid #ddd;
     background-color: var(--card-background);
@@ -381,6 +381,31 @@ main {
 
 .infinite-scroll-item:last-child {
     border-bottom: none;
+}
+
+.simulator-option {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 1em;
+    margin-bottom: 1em;
+    cursor: pointer;
+    background: #f9f9f9;
+    transition: background 0.2s, border 0.2s;
+}
+.simulator-option.selected {
+    border-color: #0078d7;
+    background: #e6f0fa;
+    color: #222;
+    font-weight: bold;  
+}
+
+.simulator-explanation {
+    background: #f4f8ff;
+    border-left: 4px solid #0078d7;
+    padding: 1em;
+    border-radius: 4px;
+    margin-top: 1em;
+    font-size: 1.05em;
 }
 
 /* Quiz de Conscientização */
@@ -599,3 +624,4 @@ footer {
         padding: 20px;
     }
 }
+
