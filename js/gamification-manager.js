@@ -62,7 +62,7 @@ class GamificationManager {
 
         this._migrateFromUserProgress();
         this.loadState();
-        
+
         this._initializeMockRanking();
 
         // Reset do desafio diário se necessário
@@ -103,10 +103,10 @@ class GamificationManager {
 
                 // Salva no novo formato
                 localStorage.setItem('gamification-state', JSON.stringify(this.state));
-                
+
                 // Remove antigo (opcional, para limpeza)
                 // localStorage.removeItem('userProgress');
-                
+
                 console.log('✅ Migração concluída. Use gamificationManager.getState() no app.js daqui em diante.');
             }
         } catch (error) {
@@ -137,37 +137,37 @@ class GamificationManager {
     /**
      * Carrega estado do localStorage
      */
-   loadState() {
-    try {
-        const saved = localStorage.getItem('gamification-state');
-        if (saved) {
-            const parsedState = JSON.parse(saved);
+    loadState() {
+        try {
+            const saved = localStorage.getItem('gamification-state');
+            if (saved) {
+                const parsedState = JSON.parse(saved);
 
-            // Mescla com estado atual (evita sobrescrita de campos novos)
-            this.state = { ...this.state, ...parsedState };
+                // Mescla com estado atual (evita sobrescrita de campos novos)
+                this.state = { ...this.state, ...parsedState };
 
-            // Garante que arrays e objetos essenciais estejam inicializados
-            if (!Array.isArray(this.state.badges)) this.state.badges = [];
-            if (!Array.isArray(this.state.milestones)) this.state.milestones = [];
-            if (!Array.isArray(this.state.pagesVisited)) this.state.pagesVisited = [];
-            if (typeof this.state.dailyChallenge !== 'object' || this.state.dailyChallenge === null) {
-                this.state.dailyChallenge = {
-                    pagesVisitedToday: 0,
-                    requiredPages: 3,
-                    completed: false,
-                    lastReset: new Date().toDateString()
-                };
+                // Garante que arrays e objetos essenciais estejam inicializados
+                if (!Array.isArray(this.state.badges)) this.state.badges = [];
+                if (!Array.isArray(this.state.milestones)) this.state.milestones = [];
+                if (!Array.isArray(this.state.pagesVisited)) this.state.pagesVisited = [];
+                if (typeof this.state.dailyChallenge !== 'object' || this.state.dailyChallenge === null) {
+                    this.state.dailyChallenge = {
+                        pagesVisitedToday: 0,
+                        requiredPages: 3,
+                        completed: false,
+                        lastReset: new Date().toDateString()
+                    };
+                }
+
+                console.log('Estado carregado:', this.state.points, 'pontos');
+            } else {
+                this.saveState();
             }
-
-            console.log('Estado carregado:', this.state.points, 'pontos');
-        } else {
-            this.saveState();
+        } catch (error) {
+            console.error('Erro ao carregar estado:', error);
+            this.saveState(); // Recria estado válido
         }
-    } catch (error) {
-        console.error('Erro ao carregar estado:', error);
-        this.saveState(); // Recria estado válido
     }
-}
 
     /**
      * Salva estado no localStorage e sincroniza com userProgress (compatibilidade)
@@ -175,7 +175,7 @@ class GamificationManager {
     saveState() {
         try {
             localStorage.setItem('gamification-state', JSON.stringify(this.state));
-            
+
             const userProgress = {
                 points: this.state.points,
                 visitedPages: {}, // Reconstrói objeto de páginas visitadas
@@ -192,11 +192,11 @@ class GamificationManager {
                 userProgress.visitedPages[page] = true;
             });
             localStorage.setItem('userProgress', JSON.stringify(userProgress));
-            
+
             // Atualiza mock ranking
             this.mockUsers[0].points = this.state.points;
             localStorage.setItem('mock-ranking', JSON.stringify(this.mockUsers));
-            
+
             console.log('Estado salvo:', this.state.points, 'pontos');
         } catch (error) {
             console.error('Erro ao salvar estado:', error);
@@ -220,7 +220,7 @@ class GamificationManager {
             }
             if (externalState.quizCompleted !== undefined) this.state.quizCompleted = externalState.quizCompleted;
             if (externalState.quizScore !== undefined) this.state.quizScore = externalState.quizScore;
-            
+
             this.saveState();
             console.log('Estado externo definido:', this.state.points, 'pontos');
         }
@@ -245,7 +245,7 @@ class GamificationManager {
     addPoints(points, type = 'general') {
         const finalPoints = Math.floor(points * this.state.multiplier);
         const previousPoints = this.state.points;
-        
+
         this.state.points += finalPoints;
 
         // Verifica badges e milestones
@@ -314,12 +314,12 @@ class GamificationManager {
      */
     checkMilestones(previousPoints) {
         this.milestoneDefinitions.forEach(milestone => {
-            if (previousPoints < milestone.threshold && 
+            if (previousPoints < milestone.threshold &&
                 this.state.points >= milestone.threshold &&
                 !this.state.milestones.includes(milestone.threshold)) {
-                
+
                 this.state.milestones.push(milestone.threshold);
-                
+
                 this.state.points += milestone.bonusPoints;
 
                 const event = new CustomEvent('milestoneReached', {
@@ -330,7 +330,7 @@ class GamificationManager {
                     }
                 });
                 this.eventTarget.dispatchEvent(event);
-                
+
                 console.log(`Milestone: ${milestone.message} (+${milestone.bonusPoints} bônus)`);
             }
         });
@@ -349,7 +349,7 @@ class GamificationManager {
 
             const badge = this.badgeDefinitions.find(b => b.id === badgeId);
             if (!badge) return null;
-            
+
             // Bônus de pontos
             const bonusPoints = 50;
             this.state.points += bonusPoints;
@@ -376,7 +376,7 @@ class GamificationManager {
     visitPage(pageName) {
         if (!this.state.pagesVisited.includes(pageName)) {
             this.state.pagesVisited.push(pageName);
-    
+
             this.addPoints(25, 'page_visit');
             this.saveState();
             console.log(`Página visitada: ${pageName}`);
@@ -392,7 +392,7 @@ class GamificationManager {
     completeQuiz(score) {
         this.state.quizScore = score;
         this.state.quizCompleted = true;
-        
+
         const points = Math.floor(score / 2); // Ex: 100% = 50 pontos
         this.addPoints(points, 'quiz');
 
@@ -411,7 +411,10 @@ class GamificationManager {
                 totalPoints: this.state.points
             }
         });
-        this.eventTarget.dispatchEvent(event);
+        //this.eventTarget.dispatchEvent(event);
+        this.eventTarget.dispatchEvent(new CustomEvent('quizCompleted', {
+            detail: { score, points, message: `Quiz: ${score}% de acerto!` }
+        }));
 
         this.saveState();
         return points;
@@ -427,7 +430,7 @@ class GamificationManager {
             this.state.dailyChallenge.completed = true;
             this.addPoints(100, 'daily_challenge');
             this.state.multiplier = Math.min(this.state.multiplier + 0.1, 2.0);
-            
+
             // ✅ CORREÇÃO: Emite evento específico
             const event = new CustomEvent('dailyChallengeCompleted', {
                 detail: {
@@ -436,8 +439,9 @@ class GamificationManager {
                 }
             });
             this.eventTarget.dispatchEvent(event);
-            
+
             this.saveState();
+            this.resetDailyChallenge();
             console.log('Desafio diário completado!');
             return true;
         }

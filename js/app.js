@@ -133,6 +133,22 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAllUI();
     });
 
+      const quizSubmitBtn = document.getElementById('quiz-submit') || document.querySelector('.btn-primary');
+    if (quizSubmitBtn) {
+        // Adiciona listener se não tiver onclick (evita dupes)
+        if (!quizSubmitBtn.hasAttribute('onclick')) {
+            quizSubmitBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Previne qualquer form submit
+                submitQuiz();
+            });
+            console.log('✅ Listener para quiz-submit adicionado (sem onclick duplicado)');
+        } else {
+            console.log('✅ Botão quiz usa onclick="submitQuiz()" - listener não adicionado para evitar dupes');
+        }
+    } else {
+        console.warn('Botão de quiz (#quiz-submit ou .btn-primary) não encontrado - adicione id ou classe');
+    }
+
     console.log('🎮 App inicializado: Gamificação + Celebrações integradas!');
     console.log('✅ gamificationManager disponível:', gamificationManager);
     console.log('✅ celebration global disponível:', celebration);
@@ -363,14 +379,100 @@ function loadMoreInfiniteScrollItems() {
     gamificationManager.addPoints(10, 'infinite_scroll');
 }
 
-function submitQuiz() {
-    // Exemplo: Colete respostas do form e calcule score
-    const score = 85; // Substitua por lógica real (compare com QUIZ_ANSWERS)
-    
-    if (gamificationManager) {
-        gamificationManager.completeQuiz(score); // Emite quizCompleted e verifica badges
+function submitQuiz(e) {
+    e?.preventDefault(); // Previne submit se chamado de form/button
+
+    console.log('Quiz submit chamado - validando respostas...');
+
+    // Coleta respostas selecionadas (name="q1", q2, q3 do seu HTML)
+    const userAnswers = {};
+    let totalQuestions = 0;
+    let correctAnswers = 0;
+
+    ['q1', 'q2', 'q3'].forEach(q => {
+        const selected = document.querySelector(`input[name="${q}"]:checked`);
+        if (selected) {
+            userAnswers[q] = selected.value;
+            totalQuestions++;
+            if (selected.value === QUIZ_ANSWERS[q]) {
+                correctAnswers++;
+            }
+        }
+    });
+
+    console.log('Respostas do usuário:', userAnswers);
+    console.log('Respostas corretas esperadas:', QUIZ_ANSWERS);
+
+    if (totalQuestions < 3) {
+        const feedbackEl = document.getElementById('quiz-feedback');
+        if (feedbackEl) {
+            feedbackEl.innerHTML = '<p style="color: red;">Por favor, responda todas as 3 perguntas antes de enviar!</p>';
+            feedbackEl.style.display = 'block';
+        } else {
+            alert('Por favor, responda todas as 3 perguntas antes de enviar!');
+        }
+        return; // Quiz incompleto
     }
-    
-    // Atualize UI do quiz
+
+    // Calcula score percentual (arredondado para inteiro)
+    const score = Math.round((correctAnswers / totalQuestions) * 100);
+    console.log(`Score calculado: ${correctAnswers}/${totalQuestions} acertos = ${score}%`);
+
+    // ✅ Integração: Chama manager com score real (emite quizCompleted, verifica badges)
+    if (gamificationManager) {
+        const pointsAwarded = gamificationManager.completeQuiz(score); // Retorna points, triggera evento
+        console.log(`Quiz completado - score ${score}% enviado ao manager, +${pointsAwarded} pontos`);
+    }
+
+    // ✅ Atualiza UI do quiz: Mostra resultado em #quiz-feedback (seu ID)
+    const quizFeedbackEl = document.getElementById('quiz-feedback');
+    if (quizFeedbackEl) {
+        let feedback = '';
+        let color = '';
+        if (score === 100) {
+            feedback = 'Perfeito! Você é um Mestre do Quiz! 🏆 Todas as respostas corretas.';
+            color = 'green';
+        } else if (score >= 70) {
+            feedback = 'Ótimo trabalho! Continue estudando os mecanismos de vício digital.';
+            color = 'blue';
+        } else if (score >= 50) {
+            feedback = 'Bom esforço! Revise os conceitos de conscientização e dark patterns.';
+            color = 'orange';
+        } else {
+            feedback = 'Tente novamente! O conhecimento sobre hábitos digitais é essencial para o equilíbrio.';
+            color = 'red';
+        }
+        quizFeedbackEl.innerHTML = `
+            <h3 style="color: ${color};">Seu Score: ${score}% (${correctAnswers}/${totalQuestions} corretas)</h3>
+            <p>${feedback}</p>
+        `;
+        quizFeedbackEl.style.display = 'block';
+        console.log('Resultado exibido em #quiz-feedback');
+    } else {
+        console.warn('#quiz-feedback não encontrado - adicione no HTML para feedback visual');
+        alert(`Quiz concluído! Score: ${score}% (${correctAnswers}/${totalQuestions} corretas)\n${feedback}`);
+    }
+
+    // Limpa seleções para novo quiz
+    document.querySelectorAll('input[name="q1"], input[name="q2"], input[name="q3"]').forEach(radio => radio.checked = false);
+
+    // Atualiza UI global (pontos, badges, sidebar, etc.)
     renderGamificationStatus();
+    updateAllUI();
+
+    console.log('Quiz validado e UI atualizada com sucesso');
+}
+
+/**
+ * ✅ Função auxiliar para resetar quiz (chamada do botão "Tentar Novamente")
+ */
+function resetQuiz() {
+    const quizFeedbackEl = document.getElementById('quiz-feedback');
+    if (quizFeedbackEl) {
+        quizFeedbackEl.style.display = 'none';
+        quizFeedbackEl.innerHTML = ''; // Limpa conteúdo
+    }
+    // Limpa todas as radios
+    document.querySelectorAll('input[name="q1"], input[name="q2"], input[name="q3"]').forEach(radio => radio.checked = false);
+    console.log('Quiz resetado - pronto para nova tentativa');
 }
