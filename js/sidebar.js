@@ -529,7 +529,7 @@ class SidebarManager {
         const dashboardContent = document.getElementById('analytics-dashboard-content');
         if (dashboardModal && dashboardContent) {
             dashboardContent.innerHTML = `
-                <button id="close-analytics-dashboard" style="position:absolute; top:10px; right:10px;">Fechar</button>
+                <button id="close-analytics-dashboard" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5em; color:#d32f2f; cursor:pointer;">&#10006;</button>
                 ${this.analytics.createDashboardHTML()}
             `;
             dashboardModal.style.display = 'flex';
