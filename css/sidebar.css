@@ -1,541 +1,556 @@
+main {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    column-gap: 10px;
+    row-gap: 10px;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
     main {
-        display: grid;
-        grid-template-columns: 1fr 300px;
-        column-gap: 10px;
-        row-gap: 10px;
-        align-items: start;
-    }
-
-    @media (max-width: 992px) {
-        main {
-            grid-template-columns: 1fr;
-            padding: 1rem;
-        }
-
-        .sidebar {
-            order: -1;
-            /* Move sidebar to top on smaller screens */
-        }
+        grid-template-columns: 1fr;
+        padding: 1rem;
     }
 
     .sidebar {
-        background-color: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        position: sticky;
+        order: -1;
+        /* Move sidebar to top on smaller screens */
+    }
+}
 
+.sidebar {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    position: sticky;
+
+}
+
+.sidebar h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+}
+
+.gamification-stats p {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.gamification-stats strong {
+    color: var(--secondary-color);
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 1rem;
+    height: 15px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--accent-color);
+    border-radius: 5px;
+    transition: width 0.5s ease-out;
+}
+
+.badges-list,
+.badges-grid {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    /* ✅ Menor min-width: 90px (era 120px) */
+    gap: 0.4rem;
+    /* ✅ Gap menor para mais badges por linha */
+    max-height: 200px;
+    /* Limita altura para scroll se muitos */
+    overflow-y: auto;
+    /* Scroll sutil se necessário */
+}
+
+/* BADGE ITEM - Mais Compacto */
+.badge-item {
+    background-color: #eee;
+    padding: 0.3rem 0.5rem;
+    /* ✅ Reduzido: era 0.5rem 0.8rem */
+    border-radius: 15px;
+    /* ✅ Border menor para compacto */
+    font-size: 0.8rem;
+    /* ✅ Font menor: era 0.9rem */
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centraliza icon + nome */
+    gap: 0.2rem;
+    /* ✅ Gap menor entre icon e texto */
+    text-align: center;
+    transition: all 0.2s ease;
+    /* ✅ Transição mais rápida */
+    border: 1px solid #ddd;
+    min-height: 40px;
+    /* Altura fixa para uniformidade */
+    max-width: 120px;
+    /* ✅ Limita largura para não expandir */
+    white-space: nowrap;
+    /* Evita quebra de linha no nome */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* ... se nome longo */
+    position: relative;
+    /* Para tooltip absolute */
+    cursor: help;
+    /* Indicador de tooltip */
+}
+
+.badge-item:hover {
+    transform: scale(1.02);
+    /* ✅ Scale menor: era 1.05 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+    background-color: #f0f0f0;
+    /* Hover leve */
+}
+
+.badge-item.unlocked {
+    background: linear-gradient(135deg, var(--secondary-color, #28a745), #20c997);
+    color: white;
+    font-weight: 600;
+    border-color: var(--secondary-color, #28a745);
+    animation: badgeUnlock 0.5s ease-out;
+    /* ✅ Mais curta: era 0.6s */
+}
+
+@keyframes badgeUnlock {
+    0% {
+        transform: scale(0.9);
+        /* ✅ Scale inicial menor */
+        opacity: 0;
     }
 
-    .sidebar h3 {
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
-        border-bottom: 1px solid var(--secondary-color);
-        padding-bottom: 0.5rem;
+    50% {
+        transform: scale(1.05);
+        /* Overshoot leve */
     }
 
-    .gamification-stats p {
-        margin-bottom: 0.5rem;
-        font-size: 1.1rem;
+    100% {
+        transform: scale(1);
+        opacity: 1;
     }
+}
 
-    .gamification-stats strong {
-        color: var(--secondary-color);
-    }
+.badge-item .icon {
+    font-size: 1rem;
+    /* ✅ Icon menor: era 1.1rem */
+    flex-shrink: 0;
+    /* Não encolhe icon */
+}
 
-    .progress-bar-container {
-        width: 100%;
-        background-color: #e0e0e0;
-        border-radius: 5px;
-        margin-top: 1rem;
-        height: 15px;
-        overflow: hidden;
-    }
+.badge-item .badge-name {
+    flex: 1;
+    /* Expande nome */
+    font-weight: 500;
+    /* Semi-bold para destaque */
+}
 
-    .progress-bar {
-        height: 100%;
-        width: 0%;
-        background-color: var(--accent-color);
-        border-radius: 5px;
-        transition: width 0.5s ease-out;
-    }
+/* TOOLTIP FLUTUANTE - Não Afeta Layout */
+.badge-item .badge-tooltip {
+    position: absolute;
+    /* ✅ Absolute: Fora do fluxo, não expande badge */
+    bottom: 100%;
+    /* Acima do badge */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    /* Fundo escuro semi-transparente */
+    color: white;
+    padding: 0.4rem 0.6rem;
+    /* ✅ Padding menor: era implícito maior */
+    border-radius: 6px;
+    font-size: 0.75rem;
+    /* ✅ Font pequena para compacto */
+    white-space: nowrap;
+    /* Uma linha se possível */
+    max-width: 180px;
+    /* ✅ Limita largura (era ilimitado) */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    /* Fade rápido */
+    z-index: 20;
+    /* Acima de outros elementos */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* Sombra para profundidade */
+    margin-bottom: 5px;
+    /* Espaço abaixo do badge */
+    pointer-events: none;
+    /* Não interfere com cliques */
+}
+
+.badge-item:hover .badge-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.badge-item .badge-tooltip strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.85rem;
+    /* Título um pouco maior */
+}
+
+.badge-item .badge-tooltip p {
+    margin: 0;
+    font-size: 0.7rem;
+    /* Requirement menor */
+    opacity: 0.9;
+}
+
+/* Setas para tooltip (opcional, triângulo abaixo) */
+.badge-item .badge-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.85);
+    /* Aponta para cima, cor do fundo */
+    margin-left: -5px;
+    /* Centraliza seta */
+}
+
+/* RESPONSIVO PARA MOBILE - Tooltip Compacto ou Escondido */
+@media (max-width: 768px) {
 
     .badges-list,
     .badges-grid {
-        list-style: none;
-        padding: 0;
-        margin: 1rem 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-        /* ✅ Menor min-width: 90px (era 120px) */
-        gap: 0.4rem;
-        /* ✅ Gap menor para mais badges por linha */
-        max-height: 200px;
-        /* Limita altura para scroll se muitos */
-        overflow-y: auto;
-        /* Scroll sutil se necessário */
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        /* Ainda menor em mobile */
+        gap: 0.3rem;
     }
 
-    /* BADGE ITEM - Mais Compacto */
     .badge-item {
-        background-color: #eee;
-        padding: 0.3rem 0.5rem;
-        /* ✅ Reduzido: era 0.5rem 0.8rem */
-        border-radius: 15px;
-        /* ✅ Border menor para compacto */
-        font-size: 0.8rem;
-        /* ✅ Font menor: era 0.9rem */
-        color: #666;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        /* Centraliza icon + nome */
-        gap: 0.2rem;
-        /* ✅ Gap menor entre icon e texto */
-        text-align: center;
-        transition: all 0.2s ease;
-        /* ✅ Transição mais rápida */
-        border: 1px solid #ddd;
-        min-height: 40px;
-        /* Altura fixa para uniformidade */
-        max-width: 120px;
-        /* ✅ Limita largura para não expandir */
-        white-space: nowrap;
-        /* Evita quebra de linha no nome */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        /* ... se nome longo */
-        position: relative;
-        /* Para tooltip absolute */
-        cursor: help;
-        /* Indicador de tooltip */
-    }
-
-    .badge-item:hover {
-        transform: scale(1.02);
-        /* ✅ Scale menor: era 1.05 */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* Sombra sutil */
-        background-color: #f0f0f0;
-        /* Hover leve */
-    }
-
-    .badge-item.unlocked {
-        background: linear-gradient(135deg, var(--secondary-color, #28a745), #20c997);
-        color: white;
-        font-weight: 600;
-        border-color: var(--secondary-color, #28a745);
-        animation: badgeUnlock 0.5s ease-out;
-        /* ✅ Mais curta: era 0.6s */
-    }
-
-    @keyframes badgeUnlock {
-        0% {
-            transform: scale(0.9);
-            /* ✅ Scale inicial menor */
-            opacity: 0;
-        }
-
-        50% {
-            transform: scale(1.05);
-            /* Overshoot leve */
-        }
-
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
+        padding: 0.25rem 0.4rem;
+        /* Extra compacto em mobile */
+        font-size: 0.75rem;
+        min-height: 35px;
+        max-width: 100px;
     }
 
     .badge-item .icon {
-        font-size: 1rem;
-        /* ✅ Icon menor: era 1.1rem */
-        flex-shrink: 0;
-        /* Não encolhe icon */
+        font-size: 0.9rem;
     }
 
-    .badge-item .badge-name {
-        flex: 1;
-        /* Expande nome */
-        font-weight: 500;
-        /* Semi-bold para destaque */
-    }
-
-    /* TOOLTIP FLUTUANTE - Não Afeta Layout */
+    /* ✅ Tooltip em mobile: Mais compacto ou inline (sem absolute para espaço) */
     .badge-item .badge-tooltip {
-        position: absolute;
-        /* ✅ Absolute: Fora do fluxo, não expande badge */
-        bottom: 100%;
-        /* Acima do badge */
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.85);
-        /* Fundo escuro semi-transparente */
-        color: white;
-        padding: 0.4rem 0.6rem;
-        /* ✅ Padding menor: era implícito maior */
-        border-radius: 6px;
-        font-size: 0.75rem;
-        /* ✅ Font pequena para compacto */
-        white-space: nowrap;
-        /* Uma linha se possível */
-        max-width: 180px;
-        /* ✅ Limita largura (era ilimitado) */
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease, visibility 0.2s ease;
-        /* Fade rápido */
-        z-index: 20;
-        /* Acima de outros elementos */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        /* Sombra para profundidade */
-        margin-bottom: 5px;
-        /* Espaço abaixo do badge */
-        pointer-events: none;
-        /* Não interfere com cliques */
-    }
-
-    .badge-item:hover .badge-tooltip {
+        position: static;
+        /* Inline em mobile para economizar espaço vertical */
+        transform: none;
+        display: none;
+        /* Esconde por default em touch */
+        background: none;
+        color: inherit;
+        padding: 0;
+        max-width: none;
         opacity: 1;
         visibility: visible;
-    }
-
-    .badge-item .badge-tooltip strong {
-        display: block;
-        margin-bottom: 0.2rem;
-        font-size: 0.85rem;
-        /* Título um pouco maior */
-    }
-
-    .badge-item .badge-tooltip p {
+        box-shadow: none;
         margin: 0;
         font-size: 0.7rem;
-        /* Requirement menor */
-        opacity: 0.9;
+        font-style: italic;
     }
 
-    /* Setas para tooltip (opcional, triângulo abaixo) */
-    .badge-item .badge-tooltip::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-top-color: rgba(0, 0, 0, 0.85);
-        /* Aponta para cima, cor do fundo */
-        margin-left: -5px;
-        /* Centraliza seta */
-    }
-
-    /* RESPONSIVO PARA MOBILE - Tooltip Compacto ou Escondido */
-    @media (max-width: 768px) {
-
-        .badges-list,
-        .badges-grid {
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            /* Ainda menor em mobile */
-            gap: 0.3rem;
-        }
-
-        .badge-item {
-            padding: 0.25rem 0.4rem;
-            /* Extra compacto em mobile */
-            font-size: 0.75rem;
-            min-height: 35px;
-            max-width: 100px;
-        }
-
-        .badge-item .icon {
-            font-size: 0.9rem;
-        }
-
-        /* ✅ Tooltip em mobile: Mais compacto ou inline (sem absolute para espaço) */
-        .badge-item .badge-tooltip {
-            position: static;
-            /* Inline em mobile para economizar espaço vertical */
-            transform: none;
-            display: none;
-            /* Esconde por default em touch */
-            background: none;
-            color: inherit;
-            padding: 0;
-            max-width: none;
-            opacity: 1;
-            visibility: visible;
-            box-shadow: none;
-            margin: 0;
-            font-size: 0.7rem;
-            font-style: italic;
-        }
-
-        .badge-item:hover .badge-tooltip,
-        .badge-item:focus .badge-tooltip {
-            display: block;
-            /* Mostra só em focus (tap longo ou keyboard) */
-        }
-
-        .badge-item .badge-tooltip::after {
-            display: none;
-            /* Sem seta em mobile */
-        }
-
-        /* Nome mais curto em mobile */
-        .badge-item .badge-name {
-            display: none;
-            /* Esconde nome, só icon em badges muito pequenos */
-        }
-
-        .badge-item.unlocked .badge-name {
-            display: inline;
-            /* Mostra nome só em unlocked para destaque */
-        }
-    }
-
-    @media (max-width: 480px) {
-
-        .badges-list,
-        .badges-grid {
-            grid-template-columns: 1fr 1fr;
-            /* 2 por linha em telas muito pequenas */
-            gap: 0.2rem;
-        }
-
-        .badge-item {
-            padding: 0.2rem 0.3rem;
-            font-size: 0.7rem;
-            min-height: 30px;
-        }
-
-        /* Tooltip completamente escondido em mobile pequeno */
-        .badge-item .badge-tooltip {
-            display: none !important;
-            /* Sem tooltip em touch pequeno */
-        }
-    }
-
-    /* PERFORMANCE: Otimiza animações de badges */
-    .badge-item {
-        will-change: transform, opacity;
-        /* GPU acelera hover/unlock */
-    }
-
-    /* ACESSIBILIDADE: Tooltip para screen readers */
-    .badge-item[title]:focus-visible {
-        outline: 2px solid var(--primary-color, #6f42c1);
-        outline-offset: 2px;
-    }
-
-    /* Print: Compacto para impressão */
-    @media print {
-        .badge-item .badge-tooltip {
-            display: none;
-            /* Sem tooltip em print */
-        }
-
-        .badges-list {
-            grid-template-columns: repeat(3, 1fr);
-            /* 3 por linha em print */
-        }
-    }
-
-    .daily-challenge {
-        margin-top: 1.5rem;
-        padding-top: 1rem;
-        border-top: 1px dashed #ccc;
-    }
-
-    .daily-challenge button {
-        width: 100%;
-        margin-top: 0.8rem;
-    }
-
-    .challenge-progress {
-        width: 100%;
-        align-items: center;
-        margin-top: 0.8rem;
+    .badge-item:hover .badge-tooltip,
+    .badge-item:focus .badge-tooltip {
         display: block;
-        margin-bottom: 0.2rem;
-        font-size: 0.85rem;
-        color: var(--secondary-color)
-    }
-    
-
-    .controls {
-        margin-top: 2rem;
-        padding-top: 1rem;
-        border-top: 1px dashed #ccc;
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
+        /* Mostra só em focus (tap longo ou keyboard) */
     }
 
-    .controls button {
-        background-color: #6c757d;
-        width: 100%;
+    .badge-item .badge-tooltip::after {
+        display: none;
+        /* Sem seta em mobile */
     }
 
-    .controls button:hover {
-        background-color: #5a6268;
+    /* Nome mais curto em mobile */
+    .badge-item .badge-name {
+        display: none;
+        /* Esconde nome, só icon em badges muito pequenos */
     }
 
-    .controls .toggle-switch {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
+    .badge-item.unlocked .badge-name {
+        display: inline;
+        /* Mostra nome só em unlocked para destaque */
+    }
+}
+
+@media (max-width: 480px) {
+
+    .badges-list,
+    .badges-grid {
+        grid-template-columns: 1fr 1fr;
+        /* 2 por linha em telas muito pequenas */
+        gap: 0.2rem;
     }
 
-    .controls .toggle-switch label {
-        font-weight: 600;
-        color: var(--text-color);
+    .badge-item {
+        padding: 0.2rem 0.3rem;
+        font-size: 0.7rem;
+        min-height: 30px;
     }
 
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 40px;
-        height: 20px;
+    /* Tooltip completamente escondido em mobile pequeno */
+    .badge-item .badge-tooltip {
+        display: none !important;
+        /* Sem tooltip em touch pequeno */
+    }
+}
+
+/* PERFORMANCE: Otimiza animações de badges */
+.badge-item {
+    will-change: transform, opacity;
+    /* GPU acelera hover/unlock */
+}
+
+/* ACESSIBILIDADE: Tooltip para screen readers */
+.badge-item[title]:focus-visible {
+    outline: 2px solid var(--primary-color, #6f42c1);
+    outline-offset: 2px;
+}
+
+/* Print: Compacto para impressão */
+@media print {
+    .badge-item .badge-tooltip {
+        display: none;
+        /* Sem tooltip em print */
     }
 
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
+    .badges-list {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 por linha em print */
     }
+}
 
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 20px;
-    }
+.daily-challenge {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #ccc;
+}
 
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 16px;
-        width: 16px;
-        left: 2px;
-        bottom: 2px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
-    }
+.daily-challenge button {
+    width: 100%;
+    margin-top: 0.8rem;
+}
 
-    input:checked+.slider {
-        background-color: var(--secondary-color);
-    }
+.challenge-progress {
+    width: 100%;
+    align-items: center;
+    margin-top: 0.8rem;
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.85rem;
+    color: var(--secondary-color)
+}
 
-    input:checked+.slider:before {
-        transform: translateX(20px);
-    }
 
-    #analytics-dashboard {
-        position: fixed;
-        top: 0;
-        right: -400px;
-        /* Hidden by default */
-        width: 350px;
-        height: 100%;
-        background-color: var(--card-bg);
-        box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
-        z-index: 10001;
-        transition: right 0.4s ease-out;
-        padding: 2rem;
-        overflow-y: auto;
-    }
+.controls {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
 
-    #analytics-dashboard.active {
-        right: 0;
-    }
+.controls button {
+    background-color: #6c757d;
+    width: 100%;
+}
 
-    #analytics-dashboard h3 {
-        color: var(--primary-color);
-        font-size: 1.8rem;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid var(--secondary-color);
-        padding-bottom: 0.5rem;
-    }
+.controls button:hover {
+    background-color: #5a6268;
+}
 
-    #analytics-dashboard p {
-        margin-bottom: 0.8rem;
-        font-size: 1rem;
-    }
+.controls .toggle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
 
-    #analytics-dashboard strong {
-        color: var(--secondary-color);
-    }
+.controls .toggle-switch label {
+    font-weight: 600;
+    color: var(--text-color);
+}
 
-    #analytics-dashboard ul {
-        list-style: none;
-        padding: 0;
-        margin-top: 1rem;
-    }
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
 
-    #analytics-dashboard li {
-        background-color: #f0f0f0;
-        padding: 0.5rem;
-        border-radius: 4px;
-        margin-bottom: 0.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
 
-    #analytics-dashboard .close-btn {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: none;
-        border: none;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #666;
-        transition: color 0.3s ease;
-    }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px;
+}
 
-    #analytics-dashboard .close-btn:hover {
-        color: var(--primary-color);
-    }
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
 
-    #analytics-dashboard button {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-        width: 100%;
-        margin-top: 1.5rem;
-    }
+input:checked+.slider {
+    background-color: var(--secondary-color);
+}
 
-    #analytics-dashboard button:hover {
-        background-color: #5a0a9e;
-    }
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
 
+#analytics-dashboard {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    /* Hidden by default */
+    width: 350px;
+    height: 100%;
+    background-color: var(--card-bg);
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+    z-index: 10001;
+    transition: right 0.4s ease-out;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+#analytics-dashboard.active {
+    right: 0;
+}
+
+#analytics-dashboard h3 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+}
+
+#analytics-dashboard p {
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+#analytics-dashboard strong {
+    color: var(--secondary-color);
+}
+
+#analytics-dashboard ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+#analytics-dashboard li {
+    background-color: #f0f0f0;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#analytics-dashboard .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+#analytics-dashboard .close-btn:hover {
+    color: var(--primary-color);
+}
+
+#analytics-dashboard button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+#analytics-dashboard button:hover {
+    background-color: #5a0a9e;
+}
+
+.gamification-sidebar {
+    float: right;
+    width: 300px;
+    margin-left: 20px;
+    /* Ou flex no main: display: flex; */
+}
+
+@media (max-width: 768px) {
     .gamification-sidebar {
-        float: right;
-        width: 300px;
-        margin-left: 20px;
-        /* Ou flex no main: display: flex; */
+        float: none;
+        width: 100%;
+        margin-left: 0;
+        order: 2;
+        /* Após conteúdo */
     }
+}
 
-    @media (max-width: 768px) {
-        .gamification-sidebar {
-            float: none;
-            width: 100%;
-            margin-left: 0;
-            order: 2;
-            /* Após conteúdo */
-        }
-    }
+body.gamification-page main {
+    display: block !important;
+    grid-template-columns: none !important;
+    column-gap: 0 !important;
+}
+
+body.gamification-page .container {
+    max-width: 90% !important;
+    width: 100% !important;
+}
+
+body.gamification-page .gamification-sidebar {
+    display: none !important;
+}
