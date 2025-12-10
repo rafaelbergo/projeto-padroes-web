@@ -108,7 +108,7 @@ class AnalyticsTracker {
 
         let totalPoints = 0;
         pointsEvents.forEach(e => {
-            totalPoints += e.metadata.pointsEarned || 0; // Usar pointsEarned do metadata
+            totalPoints += e.metadata.points || 0;
         });
 
         // Calcula evento mais frequente
@@ -289,7 +289,7 @@ class AnalyticsTracker {
                     <span class="metric-label">Tempo Total no App</span>
                 </div>
                 <div class="metric-card">
-                    <span class="metric-value">${metrics.totalPoints || 0}</span>
+                    <span class="metric-value">${typeof gamificationManager !== 'undefined' ? gamificationManager.getState().points : metrics.totalPoints || 0}</span>
                     <span class="metric-label">Pontos Ganhos</span>
                 </div>
                 <div class="metric-card">
@@ -301,14 +301,28 @@ class AnalyticsTracker {
                     <span class="metric-label">Milestones Alcançados</span>
                 </div>
             </div>
-            <h3>⏱️ Últimos Eventos</h3>
+            <h3 class="event-title">⏱️ Últimos Eventos</h3>
             <ul class="timeline-list">
-                ${timeline.map(e => `
-                    <li>
-                        <strong>${e.name}</strong> - ${e.timestamp}
-                        <pre style="display:inline;">${JSON.stringify(e.metadata)}</pre>
-                    </li>
-                `).join('')}
+                ${timeline.map(e => {
+                    let description = '';
+                    if (e.name === 'points_earned') {
+                        description = `${e.metadata.points || 0} pontos ganhos`;
+                    } else if (e.name === 'badge_unlocked') {
+                        description = `Badge desbloqueada: ${e.metadata.badgeId || ''}`;
+                    } else if (e.name === 'milestone_reached') {
+                        description = `Milestone atingida: ${e.metadata.threshold || ''} pontos`;
+                    } else if (e.name === 'page_visit') {
+                        description = `Página visitada`;
+                    } else {
+                        description = e.name.replace(/_/g, ' ');
+                    }
+                    return `
+                        <li>
+                            <span class="event-desc">${description}</span>
+                            <span class="event-time">${e.timestamp}</span>
+                        </li>
+                    `;
+                }).join('')}
             </ul>
         `;
     }
