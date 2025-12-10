@@ -48,15 +48,33 @@ function setProgress(id, pctNumber) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (!document.getElementById('milestone-modal')) {
+        const modalHtml = `
+            <div id="milestone-modal" class="milestone-modal" role="dialog" aria-modal="true" aria-labelledby="milestone-modal-title" aria-describedby="milestone-modal-description" aria-hidden="true">
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <h3 id="milestone-modal-title">🎉 Milestone Alcançado! 🎉</h3>
+                    <p id="milestone-modal-description">Você atingiu um novo marco em sua jornada!</p>
+                    <div class="points-achieved" id="milestone-modal-points">0 Pontos!</div>
+                    <button id="close-milestone-modal" class="btn-primary">Continuar</button>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        console.log('✅ Modal de milestone injetado dinamicamente (ANTES de CelebrationAnimation)');
+    } else {
+        console.log('✅ Modal de milestone já existe no DOM (HTML estático)');
+    }
+    
     const hamburger = document.getElementById('hamburger-menu');
     const mainNavMenu = document.getElementById('main-nav-menu');
     hamburger?.addEventListener('click', () => mainNavMenu?.classList.toggle('active'));
 
     gamificationManager = new GamificationManager();
     window.gamificationManager = gamificationManager; // Acessível em funções
-    
+
     const sidebarManager = new SidebarManager(); // Assumido de sidebar.js
-    
+
     celebration = new CelebrationAnimation('celebration-overlay');
     window.celebration = celebration; // Acessível globalmente
 
@@ -110,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Infinte scroll videos
-    
+
     const scrollArea = document.getElementById('infinite-scroll-demo');
     if (scrollArea) {
         let page = 1;
@@ -175,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAllUI();
     });
 
-      const quizSubmitBtn = document.getElementById('quiz-submit') || document.querySelector('.btn-primary');
+    const quizSubmitBtn = document.getElementById('quiz-submit');
     if (quizSubmitBtn) {
         // Adiciona listener se não tiver onclick (evita dupes)
         if (!quizSubmitBtn.hasAttribute('onclick')) {
@@ -194,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🎮 App inicializado: Gamificação + Celebrações integradas!');
     console.log('✅ gamificationManager disponível:', gamificationManager);
     console.log('✅ celebration global disponível:', celebration);
-    
+
     updateAllUI();
     setupPsychologicalSimulator();
 });
@@ -204,13 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateAllUI() {
     if (gamificationManager) {
         renderGamificationStatus(); // Atualiza app's UI (pontos, progresso, badges)
-        
+
         if (sidebarManager && typeof sidebarManager.updateUI === 'function') {
             sidebarManager.updateUI();
         } else if (window.sidebarManager && typeof window.sidebarManager.updateUI === 'function') {
             window.sidebarManager.updateUI();
         }
-        
+
         console.log('✅ UI atualizada globalmente'); // Debug
     } else {
         console.warn('updateAllUI: gamificationManager não disponível');
@@ -273,9 +291,9 @@ function renderGamificationStatus() {
             badgeElement.title = badge.requirement; // Tooltip
             badgesContainer.appendChild(badgeElement);
         });
-        
+
         // Mostra totais se quiser
-        badgesContainer.insertAdjacentHTML('beforeend', 
+        badgesContainer.insertAdjacentHTML('beforeend',
             `<span>Total: ${unlockedBadgesCount}/${totalBadges}</span>`);
     }
 

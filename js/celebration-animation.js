@@ -3,14 +3,20 @@
  * Sistema modular de animações de celebração com suporte a múltiplos tipos
  * Compatível com Chrome, Firefox, Safari, Edge
  */
-
 class CelebrationAnimation {
     constructor(containerId) {
         this.container = document.getElementById(containerId);
         this.animationDuration = 3000; // 3 segundos
         this.animationTimeout = null;
 
-        // Validação
+        // Milestone modal elements initialization
+        this.milestoneModal = document.getElementById('milestone-modal');
+        this.milestoneModalTitle = document.getElementById('milestone-modal-title');
+        this.milestoneModalDescription = document.getElementById('milestone-modal-description');
+        this.milestoneModalPoints = document.getElementById('milestone-modal-points');
+        this.closeMilestoneModalBtn = document.getElementById('close-milestone-modal');
+
+        // Validation
         if (!this.container) {
             console.error(`Container ${containerId} não encontrado`);
             return;
@@ -34,6 +40,12 @@ class CelebrationAnimation {
         this.pointsEl = this.container.querySelector('.points-display');
         this.particlesContainer = this.container.querySelector('.particles-container');
 
+        // Initialize milestone modal if elements exist
+        if (this.milestoneModal && this.closeMilestoneModalBtn) {
+            // Add temporary listener for closing modal (will be set per show)
+            this.closeMilestoneModalBtn.onclick = null; // Clear any previous
+        }
+
         if (!this.messageEl || !this.pointsEl || !this.particlesContainer) {
             console.warn('Elementos de celebração não encontrados');
         }
@@ -44,8 +56,9 @@ class CelebrationAnimation {
      * @param {string} message - Mensagem principal
      * @param {number} points - Pontos ganhos
      * @param {string} type - Tipo de celebração
+     * @param {Object} [milestoneOptions] - Opções para milestone (title, description, milestonePoints)
      */
-    show(message, points, type = 'points') {
+    show(message, points, type = 'points', milestoneOptions = {}) {
         if (!this.container) return;
 
         // Limpa animação anterior
@@ -72,8 +85,17 @@ class CelebrationAnimation {
         if (config.enableSound) this._playSound(type);
         if (config.enableVibration) this._vibrate();
 
-        // Auto-hide após duração
-        this.animationTimeout = setTimeout(() => this._hide(), config.duration);
+
+        this.animationTimeout = setTimeout(() => {
+            this._hide();
+            // For milestone, show modal after animation
+            if (type === 'milestone' && this.milestoneModal) {
+                const title = milestoneOptions.title || 'Milestone Alcançado!';
+                const description = milestoneOptions.description || 'Parabéns pela sua conquista importante!';
+                const milestonePoints = milestoneOptions.milestonePoints || points;
+                this.showMilestoneModal(title, description, milestonePoints);
+            }
+        }, config.duration);
     }
 
     /**
@@ -105,7 +127,7 @@ class CelebrationAnimation {
                 intensity: 'high',
                 duration: 4000,
                 particleCount: 200,
-                particleType: 'confetti-complete',
+                particleType: 'emojis', // Changed to emojis for milestone celebration
                 color: '#FF69B4',
                 includeParticles: true,
                 enableSound: true,
@@ -204,10 +226,12 @@ class CelebrationAnimation {
     _createParticles(type, config) {
         if (!this.particlesContainer) return;
 
+        // Use particleType from config instead of celebration type
+        const particleType = config.particleType || type;
         const count = this._getParticleCount(config.intensity);
 
         for (let i = 0; i < count; i++) {
-            const particle = this._createParticle(type, config);
+            const particle = this._createParticle(particleType, config);
             this.particlesContainer.appendChild(particle);
         }
     }
@@ -239,8 +263,8 @@ class CelebrationAnimation {
         particle.style.setProperty('--end-y', `${endY - startY}px`);
         particle.style.setProperty('--rotation', `${rotation}deg`);
 
-        // Conteúdo baseado no tipo
-        if (type === 'emojis') {
+        // Conteúdo baseado no tipo (updated to handle 'emojis' for milestone)
+        if (type === 'emojis' || type.includes('complete')) { // Handle confetti-complete as emojis for milestone
             const emojis = ['🎉', '🎊', '🎈', '🎁', '⭐', '🌟'];
             particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
             particle.style.fontSize = `${14 + Math.random() * 16}px`;
@@ -302,7 +326,7 @@ class CelebrationAnimation {
             const sounds = {
                 points: { freq: 800, duration: 0.1 },
                 badge: { freq: 1200, duration: 0.2 },
-                milestone: { freq: 600, duration: 0.3 },
+                milestone: { freq: 600, duration: 0.3 }, // Fanfarra-like for milestone
                 confetti: { freq: 1000, duration: 0.15 },
                 stars: { freq: 1100, duration: 0.15 },
                 emojis: { freq: 900, duration: 0.1 }
@@ -366,6 +390,49 @@ class CelebrationAnimation {
             clearTimeout(this.animationTimeout);
         }
         this._hide();
+    }
+
+    /**
+     * Exibe o modal de milestone
+     * @param {string} title - Título do modal
+     * @param {string} description - Descrição do milestone
+     * @param {number} points - Pontos do milestone
+     */
+    showMilestoneModal(title, description, points) {
+        if (!this.milestoneModal) {
+            console.warn('Elemento milestone-modal não encontrado');
+            return;
+        }
+
+        try {
+            this.milestoneModalTitle.textContent = title;
+            this.milestoneModalDescription.textContent = description;
+            this.milestoneModalPoints.textContent = `${points} Pontos!`;
+            this.milestoneModal.classList.add('active');
+
+            // Adiciona listener temporário para fechar o modal
+            if (this.closeMilestoneModalBtn) {
+                this.closeMilestoneModalBtn.onclick = () => this.hideMilestoneModal();
+            }
+        } catch (error) {
+            console.error('Erro ao exibir modal de milestone:', error);
+        }
+    }
+
+    /**
+     * Esconde o modal de milestone
+     */
+    hideMilestoneModal() {
+        if (!this.milestoneModal) return;
+
+        try {
+            this.milestoneModal.classList.remove('active');
+            if (this.closeMilestoneModalBtn) {
+                this.closeMilestoneModalBtn.onclick = null; // Remove o listener
+            }
+        } catch (error) {
+            console.error('Erro ao esconder modal de milestone:', error);
+        }
     }
 
     /**
