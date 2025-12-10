@@ -110,62 +110,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Infinte scroll videos
+    
     const scrollArea = document.getElementById('infinite-scroll-demo');
-    if (!scrollArea) return;
+    if (scrollArea) {
+        let page = 1;
+        let loading = false;
+        let videoIndex = 0;
+        let videos = [];
 
-    let page = 1;
-    let loading = false;
-    let videoIndex = 0;
-    let videos = [];
+        const PEXELS_API_KEY = 'v0G6YJko3qag5Fqu3fVd3qIIf74cMXhX7UETcKlqZNye29zsJZdiQZ0y';
+        const PEXELS_API_URL = 'https://api.pexels.com/videos/search?query=ai&per_page=5&page=';
 
-    const PEXELS_API_KEY = 'v0G6YJko3qag5Fqu3fVd3qIIf74cMXhX7UETcKlqZNye29zsJZdiQZ0y';
-    const PEXELS_API_URL = 'https://api.pexels.com/videos/search?query=ai&per_page=5&page=';
+        async function fetchVideos() {
+            loading = true;
+            const response = await fetch(PEXELS_API_URL + page, {
+                headers: {
+                    Authorization: PEXELS_API_KEY
+                }
+            });
+            const data = await response.json();
+            videos = videos.concat(data.videos);
+            page++;
+            loading = false;
+            appendVideos(3); // Adiciona 3 vídeos por vez
+        }
 
-    async function fetchVideos() {
-        loading = true;
-        const response = await fetch(PEXELS_API_URL + page, {
-            headers: {
-                Authorization: PEXELS_API_KEY
+        function appendVideos(count) {
+            for (let i = 0; i < count; i++) {
+                if (videoIndex >= videos.length) {
+                    fetchVideos();
+                    return;
+                }
+                const video = videos[videoIndex];
+                const videoUrl = video.video_files.find(f => f.quality === 'sd' && f.width <= 640)?.link || video.video_files[0].link;
+                const newItem = document.createElement('div');
+                newItem.className = 'infinite-scroll-item';
+                newItem.innerHTML = `
+                    <video width="100%" height="500" controls poster="${video.image}">
+                        <source src="${videoUrl}" type="video/mp4">
+                        Seu navegador não suporta vídeo.
+                    </video>
+                    <div style="font-size:0.9em;color:#555;">${video.user.name}</div>
+                `;
+                scrollArea.appendChild(newItem);
+                videoIndex++;
+            }
+        }
+
+        // Inicializa com alguns vídeos
+        fetchVideos();
+
+        scrollArea.addEventListener('scroll', function () {
+            if (loading) return;
+            if (scrollArea.scrollTop + scrollArea.clientHeight >= scrollArea.scrollHeight - 20) {
+                appendVideos(2);
             }
         });
-        const data = await response.json();
-        videos = videos.concat(data.videos);
-        page++;
-        loading = false;
-        appendVideos(3); // Adiciona 3 vídeos por vez
     }
-
-    function appendVideos(count) {
-        for (let i = 0; i < count; i++) {
-            if (videoIndex >= videos.length) {
-                fetchVideos();
-                return;
-            }
-            const video = videos[videoIndex];
-            const videoUrl = video.video_files.find(f => f.quality === 'sd' && f.width <= 640)?.link || video.video_files[0].link;
-            const newItem = document.createElement('div');
-            newItem.className = 'infinite-scroll-item';
-            newItem.innerHTML = `
-                <video width="100%" height="500" controls poster="${video.image}">
-                    <source src="${videoUrl}" type="video/mp4">
-                    Seu navegador não suporta vídeo.
-                </video>
-                <div style="font-size:0.9em;color:#555;">${video.user.name}</div>
-            `;
-            scrollArea.appendChild(newItem);
-            videoIndex++;
-        }
-    }
-
-    // Inicializa com alguns vídeos
-    fetchVideos();
-
-    scrollArea.addEventListener('scroll', function () {
-        if (loading) return;
-        if (scrollArea.scrollTop + scrollArea.clientHeight >= scrollArea.scrollHeight - 20) {
-            appendVideos(2);
-        }
-    });
 
     document.addEventListener('click', (e) => {
         if (e.target.id === 'complete-action-btn' && gamificationManager) {
@@ -179,7 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ celebration global disponível:', celebration);
     
     updateAllUI();
+    setupPsychologicalSimulator();
 });
+
 
 
 function updateAllUI() {
@@ -321,6 +324,7 @@ function triggerDopamineAnimation() {
 
 // Simulador de Mecanismos Psicológicos
 function setupPsychologicalSimulator() {
+    console.log('Configurando Simulador de Mecanismos Psicológicos');
     const options = document.querySelectorAll('#simulator-options .simulator-option');
     const output = document.getElementById('simulator-output');
 
@@ -370,39 +374,6 @@ function showNotificationDemo() {
     }
 }
 
-let infiniteScrollItemCount = 5;
-
-function setupInfiniteScrollDemo() {
-    const scrollArea = document.getElementById('infinite-scroll-demo');
-    if (!scrollArea) return;
-
-    scrollArea.addEventListener('scroll', () => {
-        if (scrollArea.scrollTop + scrollArea.clientHeight >= scrollArea.scrollHeight - 10) {
-            // Quase no fim da rolagem, carrega mais itens
-            loadMoreInfiniteScrollItems();
-        }
-    });
-
-    let scrollThrottle = false;
-    scrollArea.addEventListener('scroll', () => {
-        if (!scrollThrottle && gamificationManager) {
-            gamificationManager.addPoints(5, 'scroll_engagement');
-            scrollThrottle = true;
-            setTimeout(() => scrollThrottle = false, 5000); // Throttle 5s
-        }
-    }, { passive: true }); // Passive para performance
-}
-
-function loadMoreInfiniteScrollItems() {
-    const scrollArea = document.getElementById('infinite-scroll-demo');
-    if (!scrollArea || !gamificationManager) return;
-
-    // Exemplo placeholder:
-    infiniteScrollItemCount += 5;
-    // ... (adicione elementos DOM)
-
-    gamificationManager.addPoints(10, 'infinite_scroll');
-}
 
 function submitQuiz() {
     // Exemplo: Colete respostas do form e calcule score
